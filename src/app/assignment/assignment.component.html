@@ -1,0 +1,31 @@
+<div class="objectcontainer" *ngIf="Loaded">
+    <div class="row valign-wrapper">
+        <div class="col l2 m2 s3 assignment_item"><img id="companyimg" [src]="ComapanyImageUrl"></div>
+        <div class="col l8 m8 s6 assignment_item">
+            <h5>{{Assignment.Title}}</h5>
+            <p>{{Assignment.Company.Name}}</p>
+        </div>
+        <div class="col l2 m2 s3 assignment_item">
+            <p>{{Assignment.Status}}</p>
+        </div>
+    </div>
+    <div class="assignment_row">
+        <span>{{Assignment.Description}}</span>
+    </div>
+    <div class="divider"></div>
+    <a [routerLink]="['/subscriptions', Assignment.Id]">
+        <div id="participants" class="assignment_row">
+            <h5 id="participants_header">Deelnemers</h5>
+            <span *ngFor="let student of Students">{{student.Name}} {{student.Surname}}</span>
+        </div>
+    </a>
+    <div class="divider"></div>
+    <div class="row buttonrow"><a (click)="Subscribe()" id="submitbutton" class="waves-effect waves-light btn">Intekenen</a></div>  
+</div>
+
+
+<div class="fixed-action-btn" *ngIf="Loaded">
+    <a [routerLink]="['/edit-assignment', Assignment.Id]" class="btn-floating btn-large red waves-effect waves-light">
+        <i class="large material-icons">mode_edit</i>
+    </a>
+</div>

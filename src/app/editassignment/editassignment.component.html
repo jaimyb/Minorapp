@@ -1,0 +1,72 @@
+<div class="objectcontainer z-depth-1" *ngIf="Loaded">
+  <form>
+  <div class="row header"><h5 class="col s12">Opdracht wijzigen</h5></div>
+    <div *ngIf="Succes" class="row">
+      <div class="col s12 m12 l12">
+        <div class="card teal lighten-2">
+          <div class="card-content white-text">
+            <span id="succesmessage" class="card-title">Succes!</span>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="row center-align">
+        <div class="col s12 assignment_item">
+          <div>
+              <img id="companyimg"  [src]="LocalUrl">
+              <input type="file" (change)="onFileSelected($event)">
+          </div>
+          
+        </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <input value="" name="title" [(ngModel)]="Assignment.Title" id="title" type="text" class="validate">
+        <label class="active" for="title">Titel</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col s12">
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>Afbeeldingen</span>
+            <input type="file" (change)="onFileSelected($event)">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" placeholder="Upload één of meerdere afbeeldingen">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="selectdiv col s6">
+          <label>Status</label>
+          <select [(ngModel)]="Assignment.StatusId" name="status">
+            <option *ngFor="let s of Statuses" [value]="s.Id">{{s.Status}}</option>
+          </select>
+        </div>
+        <div class="selectdiv col s6">
+          <label>Aantal Ec</label>
+          <select [(ngModel)]="Assignment.Ec" name="ec">
+            <option *ngFor="let e of Ec" [value]="e.ec">{{e.ec}}</option>
+          </select>
+        </div>
+    </div>
+
+    <div class="row">
+          <div class="input-field col s12">
+            <textarea [(ngModel)]="Assignment.Description" name="description" id="description" class="materialize-textarea"></textarea>
+            <label class="active" for="description">Beschrijving</label>
+        </div>
+    </div>
+
+    <div class="row buttonrow">
+      <a (click)="PostAssignment()" class="waves-effect waves-light btn appbutton">Opslaan</a>
+      <a (click)="DeleteAssignment()" class="waves-effect waves-light red btn appbutton">Verwijderen</a>
+    </div>
+  </form>
+
+</div>
+

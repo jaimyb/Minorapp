@@ -1,0 +1,25 @@
+<div class="listcontainer" *ngIf="Loaded">
+    <ul>
+        <li *ngFor="let assignment of Assignments">
+            <a [routerLink]="['/assignment-details', assignment.Id]">
+                <div class="row valign-wrapper">
+                    <div class="col l2 m2 s3 assignment_item"><img id="companyimg" [src]="ComapanyImageUrl"></div>
+                    <div class="col l8 m8 s6 assignment_item">
+                        <h5>{{assignment.Title}}</h5>
+                        <p>{{assignment.Company.Name}}</p>
+                    </div>
+                    <div class="col l2 m2 s3 assignment_item">
+                        <p>{{assignment.Status}}</p>
+                        <p>{{assignment.Ec}} Ec's</p>
+                    </div>
+                </div>
+                <div class="divider"></div>
+            </a>  
+        </li>
+    </ul>
+</div>
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large red waves-effect waves-light" [routerLink]="['/add-assignment']">
+      <i class="large material-icons">add</i>
+    </a>
+</div>

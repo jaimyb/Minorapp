@@ -1,0 +1,15 @@
+<div class="objectcontainer" *ngIf="Loaded"> 
+  <div class="row valign-wrapper">
+      <div class="col l10 m10 s9 assignment_item">
+          <h5>{{Subscription.Student.Name}} {{Subscription.Student.Surname}}</h5>
+          <p>{{Subscription.Student.Email}}</p>
+      </div>
+      <div class="col l2 m2 s3 assignment_item">
+          <p>{{Subscription.Status}}</p>
+      </div>
+  </div>
+  <div id="motivation">
+    <span>{{Subscription.Motivation}}</span>
+  </div>
+  <div class="divider"></div>
+</div>
