@@ -38,6 +38,7 @@ export class EditassignmentComponent implements OnInit, OnDestroy {
     this.LocalUrl = '/assets/images/profile.png';
    }
 
+   //test
   ngOnInit() {
     this.ParamSub.push( this.route.params.subscribe(params => {
       this.assignmentService.GetAssignmentById(params['assignmentid']).subscribe(Assignment => {
