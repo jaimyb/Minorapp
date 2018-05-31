@@ -44,7 +44,7 @@ export class EditassignmentComponent implements OnInit, OnDestroy {
       this.assignmentService.GetAssignmentById(params['assignmentid']).subscribe(Assignment => {
         this.Assignment = Assignment;
         if(Assignment.AssignmentImagePath != null){
-          this.LocalUrl = 'http://localhost:3000/' + Assignment.AssignmentImagePath;
+          this.LocalUrl = Assignment.AssignmentImagePath;
         }
         this.assignmentService.GetAllAssignmentStatuses().subscribe(statuses => {
           this.Statuses = statuses;

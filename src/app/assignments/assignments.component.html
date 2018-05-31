@@ -3,7 +3,7 @@
         <li *ngFor="let assignment of Assignments">
             <a [routerLink]="['/assignment-details', assignment.Id]">
                 <div class="row valign-wrapper">
-                    <div class="col l2 m2 s3 assignment_item"><img id="companyimg" [src]="ComapanyImageUrl"></div>
+                    <div class="col l2 m2 s3 assignment_item"><img id="companyimg" [src]="assignment.AssignmentImagePath"></div>
                     <div class="col l8 m8 s6 assignment_item">
                         <h5>{{assignment.Title}}</h5>
                         <p>{{assignment.Company.Name}}</p>

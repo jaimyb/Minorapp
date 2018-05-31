@@ -21,7 +21,7 @@ export class AssignmentService {
       let opdrachten = new Array<Assignment>();
       response.json().forEach(opdracht => {
         let bedrijf = new Company(opdracht.bedrijfid, opdracht.naam, opdracht.email, opdracht.telefoonnummer);
-        opdrachten.push(new Assignment(opdracht.OpdrachtID, opdracht.titel, opdracht.beschrijving, opdracht.ec, opdracht.opdrachtstatusid, opdracht.bedrijfid ,opdracht.opdrachtstatus, bedrijf, opdracht.opdrachtafbeelding));
+        opdrachten.push(new Assignment(opdracht.OpdrachtID, opdracht.titel, opdracht.beschrijving, opdracht.ec, opdracht.opdrachtstatusid, opdracht.bedrijfid ,opdracht.opdrachtstatus, bedrijf,  'http://localhost:3000/' + opdracht.opdrachtafbeelding));
       });
       return opdrachten;
     });
@@ -31,7 +31,7 @@ export class AssignmentService {
     return this.http.get(this.Url + id).map(response => {
       let opdracht = response.json()[0];
       let bedrijf = new Company(opdracht.bedrijfid, opdracht.naam, opdracht.email, opdracht.telefoonnummer);
-      opdracht = new Assignment(opdracht.OpdrachtID, opdracht.titel, opdracht.beschrijving, opdracht.ec, opdracht.opdrachtstatusid, opdracht.bedrijfid ,opdracht.opdrachtstatus, bedrijf, opdracht.opdrachtafbeelding);
+      opdracht = new Assignment(opdracht.OpdrachtID, opdracht.titel, opdracht.beschrijving, opdracht.ec, opdracht.opdrachtstatusid, opdracht.bedrijfid ,opdracht.opdrachtstatus, bedrijf, 'http://localhost:3000/' + opdracht.opdrachtafbeelding);
       
       return opdracht;
     });
