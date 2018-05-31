@@ -14,9 +14,12 @@
         <div class="col s12 assignment_item">
           <div>
               <label id="getFileLabel" for="getFile">
-                <img id="companyimg" [src]="LocalUrl">
+                <div id="icon" class="valign-wrapper" > 
+                    <i class="material-icons">edit</i>
+                </div>
+                <img [src]="AssignmentProfileUrl">
               </label>
-              <input type="file" id="getFile" (change)="onFileSelected($event)"/>
+              <input type="file" id="getFile" (change)="onProfileSelected($event)"/>
           </div>
           
         </div>
@@ -25,6 +28,22 @@
       <div class="input-field col s12">
         <input value="" name="title" [(ngModel)]="Assignment.Title" id="title" type="text" class="validate">
         <label class="active" for="title">Titel</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col s12">
+        <div *ngFor="let image of Images">
+          <div class="image">
+            <img [src]="image.ImagePath" (click)="DeleteImage(image)">
+          </div>
+        </div>
+        <div class="image">
+          <label id="getFileLabel" for="getImage">
+            <img [src]="AssignmentImageUrl">
+          </label>
+          <input type="file" id="getImage" (change)="onImageSelected($event)"/>
+        </div>
       </div>
     </div>
 

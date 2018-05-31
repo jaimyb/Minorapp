@@ -19,10 +19,6 @@ img{
     max-height: 100px;
 }
 
-img :hover{
-    cursor: crosshair;
-}
-
 btn{
     margin: 10px !important;
 }
@@ -34,14 +30,18 @@ btn{
 #getFile {
     display: none;
 }
+
+#getImage{
+    display: none;
+}
+
+
 #getFileLabel {
     border-radius: 50%;
     display: inline-block;
     max-width: 100px;
     max-height: 100px;
     position: relative;
-    background-color: red;
-    opacity: 0.1;
 }
 
 #icon{
@@ -53,6 +53,18 @@ btn{
     align-items: center;
     justify-content: center;
     display: flex;
+    opacity: 0;
+}
+
+#icon :hover{
+    opacity: 1;
+}
+
+.image{
+    display: inline-block;
+    max-width: 100px;
+    max-height: 100px;
+
 }
 
 

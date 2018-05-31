@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { timer } from 'rxjs/observable/timer';
 import * as $ from 'jquery';
 import * as M from 'materialize-css';
+import { AssignmentImage } from '../assignmentimage';
 
 
 
@@ -29,13 +30,17 @@ export class EditassignmentComponent implements OnInit, OnDestroy {
   ParamSub: Array<any>;
   Succes: boolean;
   Error: boolean;
-  LocalUrl: string;
+  AssignmentProfileUrl: string;
+  Images: Array<AssignmentImage>;
+  AssignmentImageUrl: string;
   AssignmentPicture = null;
 
   constructor(private assignmentService: AssignmentService, private route: ActivatedRoute, private router: Router) {
     this.Loaded = false;
     this.ParamSub = new Array<any>();
-    this.LocalUrl = '/assets/images/profile.png';
+    this.AssignmentProfileUrl = '/assets/images/profile.png';
+    this.AssignmentImageUrl = '/assets/images/profile.png';
+    this.Images = new Array<AssignmentImage>();
    }
 
    //test
@@ -44,14 +49,18 @@ export class EditassignmentComponent implements OnInit, OnDestroy {
       this.assignmentService.GetAssignmentById(params['assignmentid']).subscribe(Assignment => {
         this.Assignment = Assignment;
         if(Assignment.AssignmentImagePath != null){
-          this.LocalUrl = Assignment.AssignmentImagePath;
+          this.AssignmentProfileUrl = Assignment.AssignmentImagePath;
         }
         this.assignmentService.GetAllAssignmentStatuses().subscribe(statuses => {
           this.Statuses = statuses;
-          this.Loaded = true;
-          setTimeout(() => {
-            this.InitMaterializeCSS();   
-          }, 1); 
+          this.assignmentService.GetAllAssignmentImagesByAssignmentId(params['assignmentid']).subscribe(images =>{
+            this.Images = images;
+            console.log(this.Images);
+            this.Loaded = true;
+            setTimeout(() => {
+              this.InitMaterializeCSS();   
+            }, 1); 
+          });
         });
       });
    }));
@@ -78,15 +87,39 @@ export class EditassignmentComponent implements OnInit, OnDestroy {
     }, 5000);
   }
 
-  onFileSelected(event){
+  onProfileSelected(event){
     this.AssignmentPicture = event.target.files[0];
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
       reader.onload = (event: any) => {
-          this.LocalUrl = event.target.result;
+          this.AssignmentProfileUrl = event.target.result;
       }
       reader.readAsDataURL(event.target.files[0]);
     }
+  }
+
+  onImageSelected(event)
+  {
+    console.log('helloo');
+    let url;
+    let image: AssignmentImage;
+    let file = event.target.files[0];
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+      reader.onload = (event: any) => {
+          url = event.target.result;
+          image = new AssignmentImage(null, url);
+          image.File = file;
+          console.log(image);
+          this.Images.push(image);
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
+
+  DeleteImage(image){
+    console.log(image);
+    this.Images.splice(this.Images.indexOf(image),1)
   }
 
   DeleteAssignment(){

@@ -7,6 +7,7 @@ import "rxjs/add/operator/map";
 import { CompanyService } from './company.service';
 import { Company } from './company';
 import { AssignmentStatus } from './assignmentstatus';
+import { AssignmentImage } from './assignmentimage';
 
 @Injectable()
 export class AssignmentService {
@@ -73,6 +74,26 @@ export class AssignmentService {
       else{
         return false;
       }
+    });
+  }
+
+  DeleteAllAssignmentByAssignmentId(id): Observable<boolean>{
+    return this.http.get(this.Url + '/deleteimages/' + id).map(response => {
+      return response.ok;
+    });
+  }
+
+  GetAllAssignmentImagesByAssignmentId(id): Observable<Array<AssignmentImage>>
+  {
+    return this.http.get(this.Url + '/images/' + id).map(response => {
+      let json = response.json();
+      let images = new Array<AssignmentImage>();
+
+      json.forEach(image => {
+        images.push(new AssignmentImage(image.OpdrachtAfbeeldingID, image.pad));
+      });
+
+      return images;
     });
   }
 
