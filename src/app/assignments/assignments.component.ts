@@ -4,6 +4,7 @@ import { Assignment } from '../assignment';
 import { CompanyService } from '../company.service';
 import { Router } from '@angular/router';
 import { GlobalService } from '../global.service';
+import { AssignmentImage } from '../assignmentimage';
 
 @Component({
   selector: 'app-assignments',
@@ -16,10 +17,12 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
   ComapanyImageUrl: string
   Loaded: boolean;
   ParamSub: Array<any>;
+  Images: Array<AssignmentImage>;
 
   constructor(private assignmentService: AssignmentService, private router: Router, private globalService: GlobalService) { 
     this.ComapanyImageUrl = 'http://localhost:3000/uploads//4d33d0d4a9a4fab468941319839d1ae71527597200377DSC_8252.jpg';
     this.ParamSub = new Array<any>();
+    this.Images = new Array<AssignmentImage>();
   }
 
   ngOnInit() {

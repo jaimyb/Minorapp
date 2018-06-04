@@ -13,6 +13,17 @@
         <span>{{Assignment.Description}}</span>
     </div>
     <div class="divider"></div>
+    <div class="row">
+        <div class="col s12 center-align">
+            <div class="imageshow center-align" *ngFor="let image of Images">
+                <div class="image">
+                  <img [src]="image.ImagePath">
+                </div>
+              </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
     <a [routerLink]="['/subscriptions', Assignment.Id]">
         <div id="participants" class="assignment_row">
             <h5 id="participants_header">Deelnemers</h5>

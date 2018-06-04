@@ -34,23 +34,23 @@ export class EditassignmentComponent implements OnInit, OnDestroy {
   Images: Array<AssignmentImage>;
   AssignmentImageUrl: string;
   AssignmentPicture = null;
+  DeletedImages: Array<AssignmentImage>;
 
   constructor(private assignmentService: AssignmentService, private route: ActivatedRoute, private router: Router) {
     this.Loaded = false;
     this.ParamSub = new Array<any>();
     this.AssignmentProfileUrl = '/assets/images/profile.png';
-    this.AssignmentImageUrl = '/assets/images/profile.png';
+    this.AssignmentImageUrl = '/assets/images/plus.png';
     this.Images = new Array<AssignmentImage>();
+    this.DeletedImages = new Array<AssignmentImage>();
    }
 
-   //test
   ngOnInit() {
     this.ParamSub.push( this.route.params.subscribe(params => {
       this.assignmentService.GetAssignmentById(params['assignmentid']).subscribe(Assignment => {
         this.Assignment = Assignment;
         if(Assignment.AssignmentImagePath != null){
           this.AssignmentProfileUrl = Assignment.AssignmentImagePath;
-          console.log(Assignment.AssignmentImagePath);
         }
         this.assignmentService.GetAllAssignmentStatuses().subscribe(statuses => {
           this.Statuses = statuses;
@@ -80,10 +80,23 @@ export class EditassignmentComponent implements OnInit, OnDestroy {
 
   PostAssignment(){
     this.ParamSub.push(this.assignmentService.PostAssignmentById(this.Assignment.Id, this.Assignment, this.AssignmentPicture).subscribe(bool =>{
-      this.assignmentService.PostAssignmentImages(this.Assignment.Id, this.Images).subscribe(bool => {
-        this.Succes = bool;
+      let postImages = [];
+      this.Images.forEach(image => {
+        if(image.File != undefined){
+          postImages.push(image);
+        }
       });
-
+      if(postImages.length != 0){
+        this.assignmentService.PostAssignmentImages(this.Assignment.Id, this.Images).subscribe(bool => {
+          
+        });
+      }
+      this.DeletedImages.forEach(image => {
+        this.assignmentService.DeleteImageById(image.ImageId).subscribe(bool =>{
+          console.log('image deleted: ' + image.ImageId);
+        });
+      });
+      this.Succes = bool;
     }));
     setTimeout(() => {
       this.Succes = false; 
@@ -119,7 +132,11 @@ export class EditassignmentComponent implements OnInit, OnDestroy {
   }
 
   DeleteImage(image){
-    this.Images.splice(this.Images.indexOf(image),1)
+    if(image.ImageId != undefined)
+    {
+      this.DeletedImages.push(image);
+    }
+    this.Images.splice(this.Images.indexOf(image),1);
   }
 
   DeleteAssignment(){

@@ -6,6 +6,7 @@ import { StudentService } from '../student.service';
 import { Student } from '../student';
 import { GlobalService } from '../global.service';
 import { DataService } from '../data.service';
+import { AssignmentImage } from '../assignmentimage';
 
 @Component({
   selector: 'app-assignment',
@@ -19,6 +20,7 @@ export class AssignmentComponent implements OnInit, OnDestroy {
   ParamSub: Array<any>;
   ComapanyImageUrl: string;
   Loaded: boolean;
+  Images: Array<AssignmentImage>;
 
   set DataAssignment(value: Assignment) { 
     this.dataService.CurrentAssignment = value; 
@@ -27,6 +29,7 @@ export class AssignmentComponent implements OnInit, OnDestroy {
   constructor(private dataService: DataService, private assignmentService: AssignmentService, private studentService: StudentService, private route: ActivatedRoute, private globalService: GlobalService, private router: Router) { 
     this.ParamSub = new Array<any>();
     this.ComapanyImageUrl = '/assets/images/profile.png';
+    this.Images = new Array<AssignmentImage>();
   }
 
   ngOnInit() {
@@ -35,7 +38,10 @@ export class AssignmentComponent implements OnInit, OnDestroy {
         this.Assignment = Assignment;
         this.studentService.GetStudentsByProjectId(this.Assignment.Id).subscribe(result => {
           this.Students = result;
-          this.Loaded = true;
+          this.assignmentService.GetImageDataByAssignmentId(params['id']).subscribe(images =>{
+            this.Images = images;
+            this.Loaded = true;
+          });
         });
       });
    }));

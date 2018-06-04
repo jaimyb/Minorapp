@@ -8,6 +8,7 @@ import { Subscription } from './subscription';
 import { Company } from './company';
 import { Assignment } from './assignment';
 import { Student } from './student';
+import { SubscriptionStatus } from './subscriptionstatus';
 
 @Injectable()
 export class SubscriptionService {
@@ -45,6 +46,19 @@ export class SubscriptionService {
     });
   }
 
+  UpdateSubscriptionStatus(id, statusid): Observable<boolean>{
+    let body = {IntekeningSID: statusid};
+    return this.http.post(this.Url + "update/" + id, body).map(response => {
+      if(response.ok)
+      {
+        return true;
+      }
+      else{
+        return false;
+      }
+    });
+  }
+
   GetAllSubscriptionsFromAssignmentId(assignmentid): Observable<Array<Subscription>>{
     return this.http.get(this.Url +'byassignment/'+ assignmentid).map(response => {
       let json = response.json();
@@ -60,6 +74,19 @@ export class SubscriptionService {
         subscriptions.push(new Subscription(subscription.IntekeningID, subscription.motivatie, subscription.intekeneningstatusid, subscription.opdrachtid, subscription.studentid, subscription.intekeningstatus,assignment, student));
       });
       return subscriptions
+    });
+  }
+
+  GetAllSubscriptionStatuses(): Observable<SubscriptionStatus[]>{
+    return this.http.get(this.Url + 'status/all').map(response => {
+      let json = response.json();
+      let statuses = new Array<SubscriptionStatus>();
+
+      json.forEach(status => {
+        statuses.push(new SubscriptionStatus(status.IntekeningSID, status.intekeningstatus));
+      });
+      console.log(json);
+      return statuses;
     });
   }
 

@@ -17,7 +17,7 @@
                 <div id="icon" class="valign-wrapper" > 
                     <i class="material-icons">edit</i>
                 </div>
-                <img [src]="AssignmentProfileUrl">
+                <img class="assignmentProfile" [src]="AssignmentProfileUrl">
               </label>
               <input type="file" id="getFile" (change)="onProfileSelected($event)"/>
           </div>
@@ -32,15 +32,15 @@
     </div>
 
     <div class="row">
-      <div class="input-field col s12">
-        <div *ngFor="let image of Images">
+      <div class="input-field col s12 center-align">
+        <div class="imageshow center-align" *ngFor="let image of Images">
           <div class="image">
             <img [src]="image.ImagePath" (click)="DeleteImage(image)">
           </div>
         </div>
         <div class="image">
           <label id="getFileLabel" for="getImage">
-            <img [src]="AssignmentImageUrl">
+            <img class="image" [src]="AssignmentImageUrl">
           </label>
           <input type="file" id="getImage" (change)="onImageSelected($event)"/>
         </div>

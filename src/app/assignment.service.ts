@@ -94,37 +94,37 @@ export class AssignmentService {
     });
   }
 
-  GetImageFilesById(id): Observable<Array<AssignmentImage>>{
-    this.http.get(this.Url + '/imagedata/' + id).map(imagedata => {
-      let data = imagedata.json();
-      let images = new Array<AssignmentImage>();
-      return this.http.get(this.Url + '/image/' + id).map(files => {
-        let test = files.json();
-        for (let index = 0; index < data.length; index++) {
-          let assignmentImage = new AssignmentImage(data[index].OpdrachtAfbeeldingID, data[index].pad);
-          assignmentImage.File = test[index];
-          images.push(assignmentImage);
-        }
-        return images;
-      }).subscribe(response =>{
-        return response;
-      });
+  // GetImageFilesById(id): Observable<Array<AssignmentImage>>{
+  //   this.http.get(this.Url + '/imagedata/' + id).map(imagedata => {
+  //     let data = imagedata.json();
+  //     let images = new Array<AssignmentImage>();
+  //     return this.http.get(this.Url + '/image/' + id).map(files => {
+  //       let test = files.json();
+  //       for (let index = 0; index < data.length; index++) {
+  //         let assignmentImage = new AssignmentImage(data[index].OpdrachtAfbeeldingID, data[index].pad);
+  //         assignmentImage.File = test[index];
+  //         images.push(assignmentImage);
+  //       }
+  //       return images;
+  //     }).subscribe(response =>{
+  //       return response;
+  //     });
 
-    });
-  }
+  //   });
+  // }
 
-  GetImagesById(id): Observable<Array<AssignmentImage>>{
-    this.GetImageDataByAssignmentId(id).subscribe(data =>{
-      let images = new Array<AssignmentImage>();
-      data.forEach(image => {
-        this.GetImageFilesById(image.ImageId).subscribe(file => {
-          image.File = file[0];
-          images.push(image);
-        });
-      });
-      return images;
-    });
-  }
+  // GetImagesById(id): Observable<Array<AssignmentImage>>{
+  //   this.GetImageDataByAssignmentId(id).subscribe(data =>{
+  //     let images = new Array<AssignmentImage>();
+  //     data.forEach(image => {
+  //       this.GetImageFilesById(image.ImageId).subscribe(file => {
+  //         image.File = file[0];
+  //         images.push(image);
+  //       });
+  //     });
+  //     return images;
+  //   });
+  // }
 
   PostAssignmentImages(id,images: Array<AssignmentImage>): Observable<boolean>{
     let fd = new FormData();
@@ -157,6 +157,17 @@ export class AssignmentService {
     }
     let body = {titel: assignment.Title, beschrijving: assignment.Description,opdrachtstatusid: assignment.StatusId, ec: assignment.Ec};
     return this.http.post(this.Url + 'update/' + id, fd).map(response => {
+      if(response.ok){
+        return true;
+      }
+      else{
+        return false;
+      }
+    });
+  }
+
+  DeleteImageById(id): Observable<boolean>{
+    return this.http.get(this.Url + 'deleteimage/' + id).map(response =>{
       if(response.ok){
         return true;
       }

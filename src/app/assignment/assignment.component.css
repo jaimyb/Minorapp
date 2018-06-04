@@ -41,3 +41,13 @@ span{
 #submitbutton{
     margin: 10px;
 }
+
+.imageshow{
+    display: inline-block;
+}
+
+.image{
+    display: inline;
+    max-width: 100px;
+    max-height: 100px;
+}
