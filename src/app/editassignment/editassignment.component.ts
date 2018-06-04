@@ -50,12 +50,12 @@ export class EditassignmentComponent implements OnInit, OnDestroy {
         this.Assignment = Assignment;
         if(Assignment.AssignmentImagePath != null){
           this.AssignmentProfileUrl = Assignment.AssignmentImagePath;
+          console.log(Assignment.AssignmentImagePath);
         }
         this.assignmentService.GetAllAssignmentStatuses().subscribe(statuses => {
           this.Statuses = statuses;
-          this.assignmentService.GetAllAssignmentImagesByAssignmentId(params['assignmentid']).subscribe(images =>{
+          this.assignmentService.GetImageDataByAssignmentId(params['assignmentid']).subscribe(images =>{
             this.Images = images;
-            console.log(this.Images);
             this.Loaded = true;
             setTimeout(() => {
               this.InitMaterializeCSS();   
@@ -80,7 +80,10 @@ export class EditassignmentComponent implements OnInit, OnDestroy {
 
   PostAssignment(){
     this.ParamSub.push(this.assignmentService.PostAssignmentById(this.Assignment.Id, this.Assignment, this.AssignmentPicture).subscribe(bool =>{
-      this.Succes = bool;
+      this.assignmentService.PostAssignmentImages(this.Assignment.Id, this.Images).subscribe(bool => {
+        this.Succes = bool;
+      });
+
     }));
     setTimeout(() => {
       this.Succes = false; 
@@ -100,7 +103,6 @@ export class EditassignmentComponent implements OnInit, OnDestroy {
 
   onImageSelected(event)
   {
-    console.log('helloo');
     let url;
     let image: AssignmentImage;
     let file = event.target.files[0];
@@ -110,7 +112,6 @@ export class EditassignmentComponent implements OnInit, OnDestroy {
           url = event.target.result;
           image = new AssignmentImage(null, url);
           image.File = file;
-          console.log(image);
           this.Images.push(image);
       }
       reader.readAsDataURL(event.target.files[0]);
@@ -118,7 +119,6 @@ export class EditassignmentComponent implements OnInit, OnDestroy {
   }
 
   DeleteImage(image){
-    console.log(image);
     this.Images.splice(this.Images.indexOf(image),1)
   }
 

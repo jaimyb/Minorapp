@@ -83,32 +83,80 @@ export class AssignmentService {
     });
   }
 
-  GetAllAssignmentImagesByAssignmentId(id): Observable<Array<AssignmentImage>>
-  {
-    return this.http.get(this.Url + '/images/' + id).map(response => {
+  GetImageDataByAssignmentId(id): Observable<Array<AssignmentImage>>{
+    return this.http.get(this.Url + '/imagedata/' + id).map(response => {
       let json = response.json();
       let images = new Array<AssignmentImage>();
-
       json.forEach(image => {
-        images.push(new AssignmentImage(image.OpdrachtAfbeeldingID, image.pad));
+        images.push(new AssignmentImage(image.OpdrachtAfbeeldingID, 'http://localhost:3000/' + image.pad));
       });
-
       return images;
     });
   }
 
+  GetImageFilesById(id): Observable<Array<AssignmentImage>>{
+    this.http.get(this.Url + '/imagedata/' + id).map(imagedata => {
+      let data = imagedata.json();
+      let images = new Array<AssignmentImage>();
+      return this.http.get(this.Url + '/image/' + id).map(files => {
+        let test = files.json();
+        for (let index = 0; index < data.length; index++) {
+          let assignmentImage = new AssignmentImage(data[index].OpdrachtAfbeeldingID, data[index].pad);
+          assignmentImage.File = test[index];
+          images.push(assignmentImage);
+        }
+        return images;
+      }).subscribe(response =>{
+        return response;
+      });
+
+    });
+  }
+
+  GetImagesById(id): Observable<Array<AssignmentImage>>{
+    this.GetImageDataByAssignmentId(id).subscribe(data =>{
+      let images = new Array<AssignmentImage>();
+      data.forEach(image => {
+        this.GetImageFilesById(image.ImageId).subscribe(file => {
+          image.File = file[0];
+          images.push(image);
+        });
+      });
+      return images;
+    });
+  }
+
+  PostAssignmentImages(id,images: Array<AssignmentImage>): Observable<boolean>{
+    let fd = new FormData();
+    console.log(images);
+    images.forEach(image => {
+      if(image.File != undefined){
+        fd.append('opdrachtAfbeeldingen', image.File, image.File.name);
+      }     
+    });
+    return this.http.post(this.Url + 'uploadimages/' + id, fd).map(response => {
+      console.log(response);
+      if(response.ok){
+        return true;
+      }
+      else{
+        return false;
+      }
+    });
+  }
+
   PostAssignmentById(id, assignment: Assignment, assignmentPicture: File): Observable<boolean>{
-    console.log(assignment);
     let fd = new FormData();
     fd.append('titel', assignment.Title);
     fd.append('beschrijving', assignment.Description);
     fd.append('opdrachtstatusid', assignment.StatusId.toString());
     fd.append('ec', assignment.Ec.toString());
-    fd.append('opdrachtAfbeelding', assignmentPicture, assignmentPicture.name);
-    console.log(fd);
+    if(assignmentPicture != undefined)
+    {
+      fd.append('opdrachtAfbeelding', assignmentPicture, assignmentPicture.name);
+    }
     let body = {titel: assignment.Title, beschrijving: assignment.Description,opdrachtstatusid: assignment.StatusId, ec: assignment.Ec};
     return this.http.post(this.Url + 'update/' + id, fd).map(response => {
-      console.log(response);
       if(response.ok){
         return true;
       }
