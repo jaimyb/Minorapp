@@ -75,6 +75,7 @@ export class AuthenticationService implements CanActivate {
         let payload = decode(response.json().token);
         this.CurrentUser = new CurrentUser(payload.email, payload.roles, payload.studentid, payload.bedrijfid, payload.coordinatorid);
         console.log(decode(response.json().token));
+        //asddsadsadasds
         return true;
       }
       else{
