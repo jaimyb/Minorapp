@@ -138,6 +138,17 @@ a {
     color: black;
   }
 
+.formcontainer{
+    -webkit-animation: fadein 0.4s; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein 0.4s; /* Firefox < 16 */
+     -ms-animation: fadein 0.4s; /* Internet Explorer */
+      -o-animation: fadein 0.4s; /* Opera < 12.1 */
+         animation: fadein 0.4s;
+
+    max-width: 500px;
+    margin: 10px auto 10px auto;
+}
+
 @media only screen and (max-width : 480px) {
     h5{
         font-size: 1.3em !important;

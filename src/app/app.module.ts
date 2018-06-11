@@ -23,6 +23,12 @@ import { MaterializeModule } from "angular2-materialize";
 import { SubscribeComponent } from './subscribe/subscribe.component';
 import { DataService } from './data.service';
 import { AddassignmentComponent } from './addassignment/addassignment.component';
+import { CookieService } from 'ngx-cookie-service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './auth/interceptor';
+import { AuthenticationService } from './authentication.service';
+import { StudentsignupComponent } from './studentsignup/studentsignup.component';
+import { SigninComponent } from './signin/signin.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +40,9 @@ import { AddassignmentComponent } from './addassignment/addassignment.component'
     SubscriptiondetailsComponent,
     EditassignmentComponent,
     SubscribeComponent,
-    AddassignmentComponent
+    AddassignmentComponent,
+    StudentsignupComponent,
+    SigninComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +50,8 @@ import { AddassignmentComponent } from './addassignment/addassignment.component'
     HttpModule,
     FormsModule
   ],
-  providers: [AssignmentService, CompanyService, StudentService, GlobalService, SubscriptionService, DataService],
+  providers: [AssignmentService, CompanyService, StudentService, GlobalService, SubscriptionService, AuthenticationService, DataService,
+    CookieService, { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

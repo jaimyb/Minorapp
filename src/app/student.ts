@@ -1,14 +1,14 @@
 export class Student{
 
-
     Id: number;
     Name: string;
     Surname: string;
     StudentID: number;
+    Studentnumber: number;
     Class: string;
     Email: string;
 
-    constructor(Id: number = null, name: string, surname: string, studentID: number, Class: string, email: string){
+    constructor(Id: number = null, name: string = null, surname: string = null, studentID: number = null, Class: string = null, email: string = null){
         this.Id = Id;
         this.Name = name;
         this.Surname = surname;
