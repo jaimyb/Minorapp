@@ -1,0 +1,11 @@
+li:hover{
+    background-color: lightgrey;
+}
+
+img{
+    border-radius: 100%;
+    width: 100%;
+    max-width: 60px;
+    max-height: 60px;
+    float: right;
+}

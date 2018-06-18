@@ -1,0 +1,15 @@
+<div class="objectcontainer" *ngIf="Loaded"> 
+    <div class="row valign-wrapper">
+        <div class="col l2 m2 s3 assignment_item"><img id="companyimg" [src]="Subscription.Assignment.AssignmentImagePath"></div>
+                <div class="col l8 m8 s6 assignment_item">
+                    <h5>{{Subscription.Assignment.Title}}</h5>
+                    <p>{{Subscription.Company.Name}}</p>
+                </div>
+        <div class="col l2 m2 s3 assignment_item">
+            <p>{{Subscription.Status}}</p>
+        </div>
+    </div>
+    <div id="motivation">
+      <span>{{Subscription.Motivation}}</span>
+    </div>
+  </div>

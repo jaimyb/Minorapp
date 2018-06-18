@@ -54,18 +54,18 @@ export class AddassignmentComponent implements OnInit, OnDestroy {
     M.AutoInit();
   }
 
-  PostAssignment(){
-    let assignment = new Assignment(null, this.AssignmentTitle, this.AssignmentDescription, this.AssignmentEc, this.AssignmentStatusId, 1);
-    this.ParamSub.push(this.assignmentService.PostAssignment(assignment).subscribe(bool =>{
-      if(bool){
-        this.router.navigate(['/assignments']);
-      }
-      else{
-        this.Error = true;
-        setTimeout(() => {
-          this.Error = false; 
-        }, 5000);
-      }
-    })); 
-  }
+  // PostAssignment(){
+  //   let assignment = new Assignment(null, this.AssignmentTitle, this.AssignmentDescription, this.AssignmentEc, this.AssignmentStatusId, 1);
+  //   this.ParamSub.push(this.assignmentService.PostAssignment(assignment,).subscribe(bool =>{
+  //     if(bool){
+  //       this.router.navigate(['/assignments']);
+  //     }
+  //     else{
+  //       this.Error = true;
+  //       setTimeout(() => {
+  //         this.Error = false; 
+  //       }, 5000);
+  //     }
+  //   })); 
+  // }
 }

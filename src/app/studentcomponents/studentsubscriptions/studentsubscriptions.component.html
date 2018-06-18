@@ -1,0 +1,20 @@
+<div class="listcontainer" *ngIf="Loaded">
+    <ul *ngIf="Subscriptions.length > 0">
+      <li *ngFor="let subscription of Subscriptions">
+          <a [routerLink]="['/studentintekeningdetail/', subscription.Id]">
+            <div class="row valign-wrapper">
+                <div class="col l2 m2 s3 assignment_item"><img id="companyimg" [src]="subscription.Assignment.AssignmentImagePath"></div>
+                <div class="col l8 m8 s6 assignment_item">
+                    <h5>{{subscription.Assignment.Title}}</h5>
+                    <p>{{subscription.Company.Name}}</p>
+                </div>
+                <div class="col l2 m2 s3 assignment_item">
+                    <p>{{subscription.Status}}</p>
+                </div>
+            </div>
+            <div class="divider"></div>
+        </a>  
+      </li>
+    </ul>
+    <h3 class="center-align" *ngIf="Subscriptions.length <= 0">Je heb nog geen intekeningen :(</h3>
+  </div>

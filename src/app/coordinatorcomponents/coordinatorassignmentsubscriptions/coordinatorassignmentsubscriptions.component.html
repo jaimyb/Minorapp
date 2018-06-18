@@ -1,0 +1,18 @@
+<div class="listcontainer" *ngIf="Loaded">
+  <ul>
+    <li *ngFor="let subscription of Subscriptions">
+        <a [routerLink]="['/coordinatorintekening', subscription.Id]">
+          <div class="row valign-wrapper">
+              <div class="col l10 m10 s9 assignment_item">
+                  <h5>{{subscription.Student.Name}} {{subscription.Student.Surname}}</h5>
+                  <p>{{subscription.Student.Email}}</p>
+              </div>
+              <div class="col l2 m2 s3 assignment_item">
+                  <p>{{subscription.Status}}</p>
+              </div>
+          </div>
+          <div class="divider"></div>
+      </a>  
+    </li>
+  </ul>
+</div>

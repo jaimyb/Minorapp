@@ -1,0 +1,27 @@
+<div class="objectcontainer" *ngIf="Loaded"> 
+  <div class="row valign-wrapper">
+      <div class="col l10 m10 s9 assignment_item">
+          <h5>{{Subscription.Student.Name}} {{Subscription.Student.Surname}}</h5>
+          <p>{{Subscription.Student.Email}}</p>
+      </div>
+      <div class="col l2 m2 s3 assignment_item">
+          <p>{{Subscription.Status}}</p>
+      </div>
+  </div>
+  <div id="motivation">
+    <span>{{Subscription.Motivation}}</span>
+  </div>
+  <div class="divider"></div>
+  <div class="row">
+        <div class="col s3"></div>
+        <div class="selectdiv col s6">
+            <form>
+                    <label>Status</label>
+                    <select [(ngModel)]="Subscription.StatusId" name="status" (change)="statusChanged($event)">
+                        <option *ngFor="let status of Statuses" [value]="status.Id">{{status.Status}}</option>
+                    </select>
+            </form>
+        </div>
+        <div class="col s3"></div>
+    </div>
+</div>

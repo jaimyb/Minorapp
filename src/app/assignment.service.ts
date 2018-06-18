@@ -28,11 +28,22 @@ export class AssignmentService {
     });
   }
 
+  GetAllAvailibleAssignments(): Observable<Array<Assignment>>{
+    return this.http.get(this.Url + 'availible').map(response => {
+      let opdrachten = new Array<Assignment>();
+      response.json().forEach(opdracht => {
+        let bedrijf = new Company(opdracht.bedrijfid, opdracht.naam, opdracht.email, opdracht.telefoonnummer);
+        opdrachten.push(new Assignment(opdracht.OpdrachtID, opdracht.titel, opdracht.beschrijving, opdracht.ec, opdracht.opdrachtstatusid, opdracht.bedrijfid ,opdracht.opdrachtstatus, bedrijf,  'http://localhost:3000/' + opdracht.opdrachtafbeelding));
+      });
+      return opdrachten;
+    });
+  }
+
   GetAssignmentById(id): Observable<Assignment>{
-    return this.http.get(this.Url + id).map(response => {
+    return this.http.get(this.Url + 'byid/' + id).map(response => {
       let opdracht = response.json()[0];
       let bedrijf = new Company(opdracht.bedrijfid, opdracht.naam, opdracht.email, opdracht.telefoonnummer);
-      opdracht = new Assignment(opdracht.OpdrachtID, opdracht.titel, opdracht.beschrijving, opdracht.ec, opdracht.opdrachtstatusid, opdracht.bedrijfid ,opdracht.opdrachtstatus, bedrijf, 'http://localhost:3000/' + opdracht.opdrachtafbeelding);
+      opdracht = new Assignment(opdracht.OpdrachtID, opdracht.titel, opdracht.beschrijving, opdracht.ec, opdracht.opdrachtstatusid, opdracht.bedrijfid ,opdracht.opdrachtstatus, bedrijf, ('http://localhost:3000/' + opdracht.opdrachtafbeelding));
       
       return opdracht;
     });
@@ -63,17 +74,22 @@ export class AssignmentService {
     });
   }
 
-  PostAssignment(assignment: Assignment): Observable<boolean>{
+  PostAssignment(assignment: Assignment, assignmentPicture: File): Observable<any>{
     console.log(assignment);
-    let body = { titel: assignment.Title, beschrijving: assignment.Description, opdrachtstatusid: assignment.StatusId, ec: assignment.Ec, bedrijfid: assignment.CompanyId };
-    return this.http.post(this.Url + 'post', body).map(response => {
-      console.log(response);
-      if(response.ok){
-        return true;
-      }
-      else{
-        return false;
-      }
+    let fd = new FormData();
+    fd.append('titel', assignment.Title);
+    fd.append('beschrijving', assignment.Description);
+    fd.append('opdrachtstatusid', assignment.StatusId.toString());
+    fd.append('ec', assignment.Ec.toString());
+    fd.append('bedrijfid', assignment.CompanyId.toString());
+    if(assignmentPicture != undefined)
+    {
+      fd.append('opdrachtAfbeelding', assignmentPicture, assignmentPicture.name);
+    }
+    ;
+    return this.http.post(this.Url + 'post', fd).map(response => {
+      console.log(response.json().insertId);
+      return response;
     });
   }
 
@@ -93,38 +109,6 @@ export class AssignmentService {
       return images;
     });
   }
-
-  // GetImageFilesById(id): Observable<Array<AssignmentImage>>{
-  //   this.http.get(this.Url + '/imagedata/' + id).map(imagedata => {
-  //     let data = imagedata.json();
-  //     let images = new Array<AssignmentImage>();
-  //     return this.http.get(this.Url + '/image/' + id).map(files => {
-  //       let test = files.json();
-  //       for (let index = 0; index < data.length; index++) {
-  //         let assignmentImage = new AssignmentImage(data[index].OpdrachtAfbeeldingID, data[index].pad);
-  //         assignmentImage.File = test[index];
-  //         images.push(assignmentImage);
-  //       }
-  //       return images;
-  //     }).subscribe(response =>{
-  //       return response;
-  //     });
-
-  //   });
-  // }
-
-  // GetImagesById(id): Observable<Array<AssignmentImage>>{
-  //   this.GetImageDataByAssignmentId(id).subscribe(data =>{
-  //     let images = new Array<AssignmentImage>();
-  //     data.forEach(image => {
-  //       this.GetImageFilesById(image.ImageId).subscribe(file => {
-  //         image.File = file[0];
-  //         images.push(image);
-  //       });
-  //     });
-  //     return images;
-  //   });
-  // }
 
   PostAssignmentImages(id,images: Array<AssignmentImage>): Observable<boolean>{
     let fd = new FormData();
@@ -155,7 +139,7 @@ export class AssignmentService {
     {
       fd.append('opdrachtAfbeelding', assignmentPicture, assignmentPicture.name);
     }
-    let body = {titel: assignment.Title, beschrijving: assignment.Description,opdrachtstatusid: assignment.StatusId, ec: assignment.Ec};
+    
     return this.http.post(this.Url + 'update/' + id, fd).map(response => {
       if(response.ok){
         return true;

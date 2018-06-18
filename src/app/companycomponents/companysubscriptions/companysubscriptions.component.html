@@ -1,0 +1,64 @@
+<div class="listcontainer" *ngIf="Loaded">
+  <ul>
+        <li class="filter_container z-depth-1">
+                <div class="row valign-wrapper">
+                    <div class="col l2 m2 s3">
+                        <label class="active" for="title">Zoeken</label>
+                        <input value="" name="title" [(ngModel)]="Search" id="title" type="text" class="validate">
+                    </div>
+                    <div class="col l2 m2 s2">
+                        
+                    </div>
+                    <div class="col l2 m2 s2">
+                        
+                    </div>
+                    <div class="col l2 m2 s2">
+                        
+                    </div>
+                    <div class="col l2 m2 s2">
+                        
+                    </div>
+                </div>
+        </li>
+        <li>
+            <div class="row valign-wrapper">
+                <div class="col l2 m2 s2">
+    
+                </div>
+                <div class="col l2 m2 s2">
+                    <p (click)="ChangeOrder($event)"  (ngModelChange)="OrderByProp=$event" class="columnheader">Project</p>
+                </div>
+                <div class="col l2 m2 s2">
+                    <p (click)="ChangeOrder($event)"  (ngModelChange)="OrderByProp=$event" class="columnheader">Naam</p>
+                </div>
+                <div class="col l2 m2 s3">
+                    <p (click)="ChangeOrder($event)" (ngModelChange)="OrderByProp=$event" class="columnheader">Email</p>
+                </div>
+                <div class="col l2 m2 s2">
+                    <p (click)="ChangeOrder($event)" (ngModelChange)="OrderByProp=$event" class="columnheader">Status</p>
+                </div>
+            </div>
+            <div class="divider"></div>
+        </li>
+    <li class="assignment_item" *ngFor="let subscription of Subscriptions | orderBy:OrderByProp:true | searchFilter:Search ">
+        <a [routerLink]="['/bedrijfintekeningdetail', subscription.Id]">
+          <div class="row valign-wrapper">
+              <div class="col l2 m2 s3"><img id="companyimg" [src]="subscription.Assignment.AssignmentImagePath"></div>
+              <div class="col l2 m2 s2">
+                  <p>{{subscription.Assignment.Title}}</p>
+              </div>
+              <div class="col l2 m2 s2">
+                  <p>{{subscription.Student.Name}} {{subscription.Student.Surname}}</p>
+              </div>
+              <div class="col l2 m2 s3">
+                  <p>{{subscription.Student.Email}}</p>
+              </div>
+              <div class="col l2 m2 s3">
+                  <p>{{subscription.Status}}</p>
+              </div>
+          </div>
+          <div class="divider"></div>
+      </a>  
+    </li>
+  </ul>
+</div>

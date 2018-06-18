@@ -9,41 +9,74 @@ import { CookieService } from 'ngx-cookie-service';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import * as decode from 'jwt-decode';
 import { CurrentUser } from './currentuser';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
-
+const helper = new JwtHelperService();
 
 @Injectable()
-export class AuthenticationService implements CanActivate {
+export class AuthenticationService {
 
   Authenticated: boolean;
   Roles: Array<string>;
   CurrentUser: CurrentUser;
 
-  canActivate(): Observable<boolean> | boolean {
-    let token = this.cookieService.get('minorappl');
-    if(this.Authenticated)
-    {
-      return true;
-    }
-    else{
-      if(token == ''){
-        return false;
+  CheckCookieAuthentication(): boolean {
+    if(this.cookieService.get('minorappl') != ''){
+      let token = JSON.parse( this.cookieService.get('minorappl')).token;
+      if(!helper.isTokenExpired(token)){
+        if(this.CurrentUser == undefined){
+          let payload = helper.decodeToken(token);
+          this.CurrentUser = new CurrentUser(payload.email, payload.roles, payload.studentid, payload.bedrijfid, payload.coordinatorid);
+        }
+        this.Authenticated = true;
+        return true;
       }
       else{
-        let body = {token: JSON.parse(token).token};
-        console.log(body);
-        return this.http.post(this.Url + "/authenticatejwt", body).map(response =>{
-          if(response.json().success){
-            this.Authenticated = true;
-            return true;
-          }
-          else{
-            this.Authenticated = false;
-            this.router.navigate(['home']);
-            return false;
-          }
-        });
+        this.Authenticated = false;
+        return false;
       }
+    }
+  }
+
+  IsCurrentUserRoleStudent(){
+    if(this.CurrentUser != undefined){
+      if(this.CurrentUser.Roles.indexOf('student') >= 0){
+        return true
+      }
+      else{
+        return false;
+      }
+    }
+    else{
+      return false;
+    }
+  }
+
+  IsCurrentUserRoleCoordinator(){
+    if(this.CurrentUser != undefined){
+      if(this.CurrentUser.Roles.indexOf('coordinator') >= 0){
+        return true
+      }
+      else{
+        return false;
+      }
+    }
+    else{
+      return false;
+    }
+  }
+
+  IsCurrentUserRoleCompany(){
+    if(this.CurrentUser != undefined){
+      if(this.CurrentUser.Roles.indexOf('bedrijf') >= 0){
+        return true
+      }
+      else{
+        return false;
+      }
+    }
+    else{
+      return false;
     }
   }
 
@@ -74,8 +107,8 @@ export class AuthenticationService implements CanActivate {
         this.cookieService.set('minorappl',JSON.stringify(response.json()));
         let payload = decode(response.json().token);
         this.CurrentUser = new CurrentUser(payload.email, payload.roles, payload.studentid, payload.bedrijfid, payload.coordinatorid);
-        console.log(decode(response.json().token));
-        //asddsadsadasds
+        this.Authenticated = true;
+        this.router.navigate(["home"]);
         return true;
       }
       else{
@@ -99,6 +132,7 @@ export class AuthenticationService implements CanActivate {
   }
 
   LogOff(){
+    console.log('ayy lmao');
     this.cookieService.delete('minorappl');
     this.Authenticated = false;
     this.router.navigate(['home']);

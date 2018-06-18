@@ -4,6 +4,7 @@ import { Assignment } from '../assignment';
 import { Subscription } from '../subscription';
 import { SubscriptionService } from '../subscription.service';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-subscribe',
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class SubscribeComponent implements OnInit, OnDestroy {
 
-  constructor(private dataService: DataService, private subscriptionService: SubscriptionService, private router: Router) {
+  constructor(private authenticationService: AuthenticationService ,private dataService: DataService, private subscriptionService: SubscriptionService, private router: Router) {
     this.ParamSub = new Array<any>();
   }
 
@@ -49,7 +50,7 @@ export class SubscribeComponent implements OnInit, OnDestroy {
   }
 
   PostSubscription(){
-    let subscription = new Subscription(null, this.Motivation, 2, this.Assignment.Id, 1);
+    let subscription = new Subscription(null, this.Motivation, 2, this.Assignment.Id, this.authenticationService.CurrentUser.StudentId, null, null, null, null, null);
     this.ParamSub.push(this.subscriptionService.PostSubscription(subscription).subscribe(response => {
       if(response){
         this.DataAssignment = null;

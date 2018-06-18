@@ -1,0 +1,64 @@
+#container{
+    padding-top: 16px;
+}
+
+#participants{
+    color: black;
+    text-decoration: none;
+    -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    transition:.5s;
+}
+
+#participants:hover{
+    background-color: lightgrey;
+}
+
+span{
+    margin: 10px 10px;
+}
+
+.assignment_row{
+    text-align: center;
+    width: 100%;
+    padding-bottom: 16px;
+    padding-top: 16px;
+}
+
+#participants_header{
+    margin-top: 0px;
+}
+
+#submitbutton{
+    margin: 10px;
+}
+
+.imageshow{
+    display: inline-block;
+}
+
+.image{
+    display: inline;
+    max-width: 100px;
+    max-height: 100px;
+}
+
+#projectimg{
+    border-radius: 100%;
+    width: 100%;
+    max-width: 100px;
+    max-height: 100px;
+}
+
+#showimg{
+    width: 100%;
+    height: auto;
+    max-width: 600px;
+    top: 0;  
+    bottom: 0;  
+    left: 0;  
+    right: 0;  
+    margin: auto;
+}

@@ -29,9 +29,33 @@ import { TokenInterceptor } from './auth/interceptor';
 import { AuthenticationService } from './authentication.service';
 import { StudentsignupComponent } from './studentsignup/studentsignup.component';
 import { SigninComponent } from './signin/signin.component';
+import { RolegaurdService } from './rolegaurd.service';
+import { StudentassignmentsComponent } from './studentcomponents/studentassignments/studentassignments.component';
+import { StudentassignmentdetailsComponent } from './studentcomponents/studentassignmentdetails/studentassignmentdetails.component';
+import { StudentsubscribeComponent } from './studentcomponents/studentsubscribe/studentsubscribe.component';
+import { StudentsubscriptiondetailsComponent } from './studentcomponents/studentsubscriptiondetails/studentsubscriptiondetails.component';
+import { CompanyassignmentsComponent } from './companycomponents/companyassignments/companyassignments.component';
+import { CompanyassignmentdetailsComponent } from './companycomponents/companyassignmentdetails/companyassignmentdetails.component';
+import { CompanysubscriptionsComponent } from './companycomponents/companysubscriptions/companysubscriptions.component';
+import { CompanysubscriptiondetailsComponent } from './companycomponents/companysubscriptiondetails/companysubscriptiondetails.component';
+import { CompanyaddassignmentComponent } from './companycomponents/companyaddassignment/companyaddassignment.component';
+import { CompanyeditassignmentComponent } from './companycomponents/companyeditassignment/companyeditassignment.component';
+import { CoordinatoraddassignmentComponent } from './coordinatorcomponents/coordinatoraddassignment/coordinatoraddassignment.component';
+import { CoordinatorassignmentdetailsComponent } from './coordinatorcomponents/coordinatorassignmentdetails/coordinatorassignmentdetails.component';
+import { CoordinatorassignmentsComponent } from './coordinatorcomponents/coordinatorassignments/coordinatorassignments.component';
+import { CoordinatoreditassignmentComponent } from './coordinatorcomponents/coordinatoreditassignment/coordinatoreditassignment.component';
+import { CoordinatorsubscriptiondetailsComponent } from './coordinatorcomponents/coordinatorsubscriptiondetails/coordinatorsubscriptiondetails.component';
+import { CoordinatorsubscriptionsComponent } from './coordinatorcomponents/coordinatorsubscriptions/coordinatorsubscriptions.component';
+import { StudentsubscriptionsComponent } from './studentcomponents/studentsubscriptions/studentsubscriptions.component';
+import { CoordinatorassignmentsubscriptionsComponent } from './coordinatorcomponents/coordinatorassignmentsubscriptions/coordinatorassignmentsubscriptions.component';
+import { OrderBy } from './orderBy';
+import { SearchPipe } from './searchPipe';
+
 
 @NgModule({
   declarations: [
+    SearchPipe,
+    OrderBy,
     AppComponent,
     HomeComponent,
     AssignmentsComponent,
@@ -42,7 +66,25 @@ import { SigninComponent } from './signin/signin.component';
     SubscribeComponent,
     AddassignmentComponent,
     StudentsignupComponent,
-    SigninComponent
+    SigninComponent,
+    StudentassignmentsComponent,
+    StudentassignmentdetailsComponent,
+    StudentsubscribeComponent,
+    StudentsubscriptiondetailsComponent,
+    CompanyassignmentsComponent,
+    CompanyassignmentdetailsComponent,
+    CompanysubscriptionsComponent,
+    CompanysubscriptiondetailsComponent,
+    CompanyaddassignmentComponent,
+    CompanyeditassignmentComponent,
+    CoordinatoraddassignmentComponent,
+    CoordinatorassignmentdetailsComponent,
+    CoordinatorassignmentsComponent,
+    CoordinatoreditassignmentComponent,
+    CoordinatorsubscriptiondetailsComponent,
+    CoordinatorsubscriptionsComponent,
+    StudentsubscriptionsComponent,
+    CoordinatorassignmentsubscriptionsComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +93,8 @@ import { SigninComponent } from './signin/signin.component';
     FormsModule
   ],
   providers: [AssignmentService, CompanyService, StudentService, GlobalService, SubscriptionService, AuthenticationService, DataService,
-    CookieService, { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }],
+    CookieService,
+    RolegaurdService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

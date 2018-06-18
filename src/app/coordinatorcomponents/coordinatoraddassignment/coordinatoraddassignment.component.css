@@ -1,0 +1,97 @@
+.input-field{
+    margin-bottom: 0px;
+}
+
+.selectdiv{
+    margin-bottom: 8px;
+}
+
+#getFile {
+    display: none;
+}
+
+#getImage{
+    display: none;
+}
+
+img{
+    max-width: 150px;
+    max-height: 150px;
+}
+
+.assignmentProfile{
+    border-radius: 50%;
+    width: 100%;
+}
+
+img{
+    max-width: 150px;
+    max-height: 150px;
+}
+
+btn{
+    margin: 10px !important;
+}
+
+#succesmessage{
+    margin-bottom: 0px;
+}
+
+#getFile {
+    display: none;
+}
+
+#getImage{
+    display: none;
+}
+
+#getFileLabel {
+    border-radius: 50%;
+    display: inline-block;
+    max-width: 100px;
+    max-height: 100px;
+    position: relative;
+    color: white;
+}
+
+#icon{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0%;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    opacity: 0;
+}
+
+#icon :hover{
+    opacity: 1;
+}
+
+.imageshow{
+    display: inline-block;
+    width: 150px;
+    height: auto;
+
+    padding: 10px;
+    margin: 10px;
+}
+
+.image > img{
+    width: 100%;
+    height: auto;
+}
+
+i{
+    font-size: 3rem;
+    color: black;
+}
+
+.image_item{
+    display: inline-block;
+    box-shadow: 0px 5px 8px #888888;
+    height: 150px;
+    width: 150px;
+}

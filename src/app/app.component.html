@@ -1,19 +1,30 @@
-<!-- <div id="menu_header">
-  <ul>
-    <li><a routerLink="/home" routerLinkActive="selected">Home</a></li>
-    <li><a routerLink="/assignments" routerLinkActive="selected">Opdrachten</a></li>
-    <li><a routerLink="/subscriptions" routerLinkActive="selected">Intekeningen</a></li>
-  </ul>
-</div> -->
 <div class="navbar-fixed">
     <nav id="navheader">
       <div class="nav-wrapper">
-        <ul id="nav-mobile" class="agent-1">
+        <ul id="nav-mobile" class="agent-1" *ngIf="!this.authenticationService.Authenticated">
+            <li><a routerLink="/home" routerLinkActive="selected">Home</a></li>
+            <li class="logbutton"><a routerLink="/signin" routerLinkActive="selected">Inloggen</a></li>
+          </ul>
+        <ul id="nav-mobile" class="agent-1" *ngIf="this.authenticationService.IsCurrentUserRoleStudent() && this.authenticationService.Authenticated">
           <li><a routerLink="/home" routerLinkActive="selected">Home</a></li>
-          <li><a routerLink="/assignments" routerLinkActive="selected">Opdrachten</a></li>
-          <li><a (click)="LogOff()">Uitloggen</a></li>
+          <li><a routerLink="/studentopdrachten" routerLinkActive="selected">Opdrachten</a></li>
+          <li><a routerLink="/studentintekeningen" routerLinkActive="selected">Intekeningen</a></li>
+          <li class="logbutton"><a (click)="LogOff()">Uitloggen</a></li>
+        </ul>
+        <ul id="nav-mobile" class="agent-1" *ngIf="this.authenticationService.IsCurrentUserRoleCoordinator() && this.authenticationService.Authenticated">
+          <li><a routerLink="/home" routerLinkActive="selected">Home</a></li>
+          <li><a routerLink="/coordinatoropdrachten" routerLinkActive="selected">Opdrachten</a></li>
+          <li><a routerLink="/coordinatorintekeningen" routerLinkActive="selected">Intekeningen</a></li>
+          <li class="logbutton"><a (click)="LogOff()">Uitloggen</a></li>
+        </ul>
+        <ul id="nav-mobile" class="agent-1" *ngIf="this.authenticationService.IsCurrentUserRoleCompany() && !this.authenticationService.IsCurrentUserRoleCoordinator() && this.authenticationService.Authenticated">
+          <li><a routerLink="/home" routerLinkActive="selected">Home</a></li>
+          <li><a routerLink="/bedrijfopdrachten" routerLinkActive="selected">Opdrachten</a></li>
+          <li><a routerLink="/bedrijfintekeningen" routerLinkActive="selected">Intekeningen</a></li>
+          <li class="logbutton"><a (click)="LogOff()">Uitloggen</a></li>
         </ul>
       </div>
+      
     </nav> 
 </div>
 

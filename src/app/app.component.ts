@@ -18,7 +18,7 @@ export class AppComponent {
   subscriptionRouteActive: boolean;
 
   constructor(private globalService: GlobalService, private authenticationService: AuthenticationService){
-
+    this.authenticationService.CheckCookieAuthentication();
   }
 
   LogOff(){

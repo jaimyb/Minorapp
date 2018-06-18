@@ -56,20 +56,29 @@ li{
 li a {
     display: block;
     width: 120px;
-    color: #000;
+    color:white;
     padding: 0px 16px;
     text-decoration: none;
     text-align: center;
 }
 
 li a:hover {
-    color: #5a6f91;
+    color: white;
 }
 
 .selected{
-    color: #5a6f91 !important;
+    color: white;
 }
 
 #navheader{
     background-color: #5d88ff !important;
+}
+
+.logbutton{
+    float: right;
+}
+
+.header{
+    min-height: 50%;
+    width: 100%;
 }
