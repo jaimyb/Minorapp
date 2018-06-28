@@ -49,9 +49,6 @@ export class EditassignmentComponent implements OnInit, OnDestroy {
     this.ParamSub.push( this.route.params.subscribe(params => {
       this.assignmentService.GetAssignmentById(params['assignmentid']).subscribe(Assignment => {
         this.Assignment = Assignment;
-        if(Assignment.AssignmentImagePath != null){
-          this.AssignmentProfileUrl = Assignment.AssignmentImagePath;
-        }
         this.assignmentService.GetAllAssignmentStatuses().subscribe(statuses => {
           this.Statuses = statuses;
           this.assignmentService.GetImageDataByAssignmentId(params['assignmentid']).subscribe(images =>{
@@ -79,7 +76,7 @@ export class EditassignmentComponent implements OnInit, OnDestroy {
   }
 
   PostAssignment(){
-    this.ParamSub.push(this.assignmentService.PostAssignmentById(this.Assignment.Id, this.Assignment, this.AssignmentPicture).subscribe(bool =>{
+    this.ParamSub.push(this.assignmentService.PostAssignmentById(this.Assignment.Id, this.Assignment).subscribe(bool =>{
       let postImages = [];
       this.Images.forEach(image => {
         if(image.File != undefined){

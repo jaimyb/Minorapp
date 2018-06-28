@@ -4,6 +4,9 @@ import { AssignmentService } from '../../assignment.service';
 import { Router } from '@angular/router';
 import { GlobalService } from '../../global.service';
 import { Assignment } from '../../assignment';
+import * as $ from 'jquery';
+import * as M from 'materialize-css';
+import { AssignmentStatus } from '../../assignmentstatus';
 
 @Component({
   selector: 'app-coordinatorassignments',
@@ -19,19 +22,41 @@ export class CoordinatorassignmentsComponent implements OnInit {
   Images: Array<AssignmentImage>;
   Search: string;
   OrderByProp: string;
+  StatusFilter: string;
+  Statuses: Array<AssignmentStatus>;
+  SchoolYearFilter: string;
+  SchoolYears: Array<string>;
+  SemesterFilter: string;
+  Semesters: Array<any>; 
 
   constructor(private assignmentService: AssignmentService, private router: Router, private globalService: GlobalService) { 
     this.ParamSub = new Array<any>();
+    this.SchoolYearFilter = this.GetSchoolyear();
   }
 
   ngOnInit() {
     this.ParamSub.push(
-      this.assignmentService.GetAllAssignments().subscribe(result => {
+      this.assignmentService.GetAllAssignmentsByYear(this.SchoolYearFilter).subscribe(result => {
         this.Assignments = result;
-        console.log(result);
-        this.Loaded = true;
+        this.assignmentService.GetAllAssignmentStatuses().subscribe(statuses => {
+          this.Statuses = statuses;
+          this.assignmentService.GetAllAssignmentSchoolYears().subscribe(years => {
+            this.SchoolYears = years;
+            this.assignmentService.GetAllAssignmentSemesters().subscribe(semesters => {
+              this.Semesters = semesters;
+              this.Loaded = true;
+              setTimeout(() => {
+                this.InitMaterializeCSS();   
+              }, 1); 
+            });         
+          });
+        });  
       })
     );
+  }
+
+  InitMaterializeCSS(){
+    M.AutoInit();
   }
 
   ngOnDestroy(): void {
@@ -42,6 +67,24 @@ export class CoordinatorassignmentsComponent implements OnInit {
 
   AssignmentClick(id){
     this.router.navigate(['/coordinatoropdrachtdetail', id]);
+  }
+
+  onYearChange(event){
+    this.ParamSub.push(
+      this.assignmentService.GetAllAssignmentsByYear(this.SchoolYearFilter).subscribe(result => {
+        this.Assignments = result;
+      }));
+  }
+
+  
+  GetSchoolyear(): string{
+    let year = Number(new Date().getFullYear());
+    if(new Date().getMonth() < 7){
+      return (year - 1).toString() + '-' + year.toString(); 
+    }
+    else{
+      return year.toString() + '-' + (year + 1).toString(); 
+    }
   }
 
   ChangeOrder(event){
@@ -58,5 +101,5 @@ export class CoordinatorassignmentsComponent implements OnInit {
       break;
     }
   }
-
 }
+

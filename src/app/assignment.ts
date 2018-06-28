@@ -1,4 +1,5 @@
 import { Company } from "./company";
+import { AssignmentImage } from "./assignmentimage";
 
 export class Assignment{
 
@@ -10,9 +11,11 @@ export class Assignment{
     CompanyId: number;
     Status: string;
     Company: Company
-    AssignmentImagePath: string; 
+    AssignmentImage: AssignmentImage; 
+    Semester: number;
+    SchoolYear: string;
 
-    constructor(id: number = null, title: string, description: string, ec: number, statusId: number, companyId: number, status: string = null ,company: Company = null, assignmentImagePath: string = null){
+    constructor(id: number = null, title: string = null, description: string = null, ec: number = null, statusId: number = null, companyId: number = null, status: string = null ,company: Company = null, assignmentImage: AssignmentImage = null, schoolYear: string = null, semester: number = null){
         this.Id = id;
         this.Title = title;
         this.Description = description;
@@ -21,7 +24,9 @@ export class Assignment{
         this.CompanyId = companyId;
         this.Status = status;
         this.Company = company;
-        this.AssignmentImagePath = assignmentImagePath;
+        this.AssignmentImage = assignmentImage;
+        this.Semester = semester;
+        this.SchoolYear = schoolYear;
     }
 
     

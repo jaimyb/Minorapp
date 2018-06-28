@@ -13,7 +13,7 @@
     <div class="col s12 assignment_item">
       <div>
           <label id="getFileLabel" for="getFile">
-            <img class="assignmentProfile" [src]="AssignmentImage.ImagePath">
+            <img class="assignmentProfile" [src]="Assignment.AssignmentImage.ImagePath">
           </label>
           <input type="file" id="getFile" (change)="onProfileSelected($event)"/>
       </div>  
@@ -21,7 +21,7 @@
   </div>
   <div class="row">
     <div class="input-field col s12">
-      <input value="" [(ngModel)]="AssignmentTitle" [ngModelOptions]="{standalone: true}" id="title" type="text" class="validate">
+      <input value="" [(ngModel)]="Assignment.Title" [ngModelOptions]="{standalone: true}" id="title" type="text" class="validate">
       <label for="title">Titel</label>
     </div>
   </div>
@@ -50,20 +50,34 @@
   <div class="row">
       <div class="selectdiv col s6">
         <label>Status</label>
-        <select [(ngModel)]="AssignmentStatusId">
+        <select [(ngModel)]="Assignment.StatusId">
           <option *ngFor="let s of Statuses" [value]="s.Id">{{s.Status}}</option>
         </select>
       </div>
       <div class="selectdiv col s6">
         <label>Aantal Ec</label>
-        <select [(ngModel)]="AssignmentEc">
+        <select [(ngModel)]="Assignment.Ec">
           <option *ngFor="let e of Ec" [value]="e.ec">{{e.ec}}</option>
         </select>
       </div>
   </div>
   <div class="row">
+      <div class="selectdiv col s6">
+        <label>Schooljaar</label>
+        <select [(ngModel)]="Assignment.SchoolYear">
+          <option *ngFor="let s of SchoolYears" [value]="s.schooljaar">{{s.schooljaar}}</option>
+        </select>
+      </div>
+      <div class="selectdiv col s6">
+        <label>Semester</label>
+        <select [(ngModel)]="Assignment.Semester">
+          <option *ngFor="let s of Semesters" [value]="s.semester">{{s.semester}}</option>
+        </select>
+      </div>
+  </div>
+  <div class="row">
         <div class="input-field col s12">
-          <textarea [(ngModel)]="AssignmentDescription" [ngModelOptions]="{standalone: true}" id="description" class="materialize-textarea"></textarea>
+          <textarea [(ngModel)]="Assignment.Description" [ngModelOptions]="{standalone: true}" id="description" class="materialize-textarea"></textarea>
           <label for="description">Beschrijving</label>
       </div>
   </div>

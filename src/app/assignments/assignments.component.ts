@@ -26,12 +26,12 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.ParamSub.push(
-      this.assignmentService.GetAllAssignments().subscribe(result => {
-        this.Assignments = result;
-        this.Loaded = true;
-      })
-    );
+    // this.ParamSub.push(
+    //   this.assignmentService.GetAllAssignments().subscribe(result => {
+    //     this.Assignments = result;
+    //     this.Loaded = true;
+    //   })
+    // );
   }
 
   ngOnDestroy(): void {

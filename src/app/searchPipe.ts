@@ -13,6 +13,7 @@ export class SearchPipe implements PipeTransform {
         args = args.toLowerCase();
 
         return value.filter(function(item){
+            console.log(JSON.stringify(item));
             return JSON.stringify(item).toLowerCase().includes(args);
         });
     }

@@ -1,20 +1,74 @@
 <div class="listcontainer" *ngIf="Loaded">
     <ul *ngIf="Subscriptions.length > 0">
-      <li *ngFor="let subscription of Subscriptions">
-          <a [routerLink]="['/studentintekeningdetail/', subscription.Id]">
+        <li class="filter_container z-depth-1">
             <div class="row valign-wrapper">
-                <div class="col l2 m2 s3 assignment_item"><img id="companyimg" [src]="subscription.Assignment.AssignmentImagePath"></div>
-                <div class="col l8 m8 s6 assignment_item">
-                    <h5>{{subscription.Assignment.Title}}</h5>
-                    <p>{{subscription.Company.Name}}</p>
+                <div class="col l3 m3 s3">
+                    <label class="active" for="title">Zoeken</label>
+                    <input value="" name="title" [(ngModel)]="Search" id="title" type="text" class="validate">
                 </div>
-                <div class="col l2 m2 s3 assignment_item">
-                    <p>{{subscription.Status}}</p>
+                <div class="col l3 m3 s3">
+                    <label>Status</label>
+                    <select [(ngModel)]="StatusFilter" name="status">
+                        <option [value]=""></option>
+                      <option *ngFor="let s of Statuses" [value]="s.Id">{{s.Status}}</option>
+                    </select>
                 </div>
+                <div class="col l3 m3 s3">
+                    <label>Jaar</label>
+                    <select [(ngModel)]="SchoolYearFilter" (change)="onYearChange($event)" name="year">
+                      <option *ngFor="let s of SchoolYears" [value]="s.schooljaar">{{s.schooljaar}}</option>
+                    </select>
+                </div>
+                <div class="col l3 m3 s3">
+                    <label>Semester</label>
+                    <select [(ngModel)]="SemesterFilter">
+                        <option [value]=""></option>
+                      <option *ngFor="let s of Semesters" [value]="s.semester">{{s.semester}}</option>
+                    </select>
+                  </div>
             </div>
-            <div class="divider"></div>
-        </a>  
-      </li>
+    </li>
+    <li>
+        <div class="row valign-wrapper">
+            <div class="col l2 m2 s2">
+
+            </div>
+            <div class="col l2 m2 s2">
+                <p (click)="ChangeOrder($event)"  (ngModelChange)="OrderByProp=$event" class="columnheader">Project</p>
+            </div>
+            <div class="col l2 m2 s2">
+                <p (click)="ChangeOrder($event)"  (ngModelChange)="OrderByProp=$event" class="columnheader">Naam</p>
+            </div>
+            <div class="col l2 m2 s3">
+                <p (click)="ChangeOrder($event)" (ngModelChange)="OrderByProp=$event" class="columnheader">Email</p>
+            </div>
+            <div class="col l2 m2 s2">
+                <p (click)="ChangeOrder($event)" (ngModelChange)="OrderByProp=$event" class="columnheader">Status</p>
+            </div>
+        </div>
+        <div class="divider"></div>
+    </li>
+<li class="assignment_item" *ngFor="let subscription of Subscriptions | orderBy:OrderByProp:true | searchFilter:Search | statusFilter:StatusFilter | semesterFilter: SemesterFilter">
+    <a [routerLink]="['/studentintekeningdetail', subscription.Id]">
+      <div class="row valign-wrapper">
+          <div class="col l2 m2 s3"><img id="companyimg" [src]="subscription.Assignment.AssignmentImage.ImagePath"></div>
+          <div class="col l2 m2 s2">
+              <p>{{subscription.Assignment.Title}}</p>
+          </div>
+          <div class="col l2 m2 s2">
+              <p>{{subscription.Student.Name}} {{subscription.Student.Surname}}</p>
+          </div>
+          <div class="col l2 m2 s3">
+              <p>{{subscription.Student.Email}}</p>
+          </div>
+          <div class="col l2 m2 s3">
+              <p>{{subscription.Status}}</p>
+          </div>
+      </div>
+      <div class="divider"></div>
+    </a>  
+</li>
+
     </ul>
     <h3 class="center-align" *ngIf="Subscriptions.length <= 0">Je heb nog geen intekeningen :(</h3>
   </div>

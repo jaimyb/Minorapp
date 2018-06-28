@@ -15,19 +15,16 @@ import { AuthenticationService } from '../../authentication.service';
 })
 export class CompanyaddassignmentComponent implements OnInit {
 
-  AssignmentTitle: string;
-  AssignmentStatusId: number;
-  AssignmentEc: number;
-  AssignmentDescription: string;
+  Assignment: Assignment;
   ParamSub: Array<any>;
   Loaded: boolean;
   Error: boolean;
-  AssignmentImage: AssignmentImage;
   Images: Array<AssignmentImage>;
   
   constructor(private assignmentService: AssignmentService, private router: Router, private authenticationService: AuthenticationService) { 
+    this.Assignment = new Assignment();
     this.ParamSub = new Array<any>();
-    this.AssignmentImage = new AssignmentImage(null,'/assets/images/profile.png');
+    this.Assignment.AssignmentImage = new AssignmentImage(null,'/assets/images/profile.png');
     this.Images = new Array<AssignmentImage>();
   }
 
@@ -52,24 +49,38 @@ export class CompanyaddassignmentComponent implements OnInit {
   }
 
   onProfileSelected(event){
-    this.AssignmentImage.File = event.target.files[0];
+    this.Assignment.AssignmentImage.File = event.target.files[0];
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
       reader.onload = (event: any) => {
-          this.AssignmentImage.ImagePath = event.target.result;
+        this.Assignment.AssignmentImage.ImagePath = event.target.result;
       }
       reader.readAsDataURL(event.target.files[0]);
     }
   }
 
+  GetSchoolyear(): string{
+    let year = Number(new Date().getFullYear());
+    if(new Date().getMonth() < 7){
+      return (year - 1).toString() + '-' + year.toString(); 
+    }
+    else{
+      return year.toString() + '-' + (year + 1).toString(); 
+    }
+  }
+
   PostAssignment(){
-    let assignment = new Assignment(null, this.AssignmentTitle, this.AssignmentDescription, 10, 4, this.authenticationService.CurrentUser.BedrijfId);
-    console.log(assignment);
-    this.ParamSub.push(this.assignmentService.PostAssignment(assignment, this.AssignmentImage.File).subscribe(response =>{
+    this.Assignment.Ec = 10;
+    this.Assignment.StatusId = 4;
+    this.Assignment.Semester = 1;
+    this.Assignment.SchoolYear = this.GetSchoolyear();
+    this.Assignment.CompanyId = this.authenticationService.CurrentUser.BedrijfId;
+    
+    this.ParamSub.push(this.assignmentService.PostAssignment(this.Assignment).subscribe(response =>{
       if(response.ok){
         this.ParamSub.push(this.assignmentService.PostAssignmentImages(response.json().insertId, this.Images).subscribe(bool => {
           if(bool){
-            this.router.navigate(['coordinatoropdrachten']);
+            this.router.navigate(['bedrijfopdrachten']);
           }
           else{
             

@@ -1,5 +1,9 @@
-li:hover{
-    background-color: lightgrey;
+li{
+    -o-transition:.5s;
+  -ms-transition:.5s;
+  -moz-transition:.5s;
+  -webkit-transition:.5s;
+  transition:.5s;
 }
 
 img{
@@ -7,5 +11,24 @@ img{
     width: 100%;
     max-width: 60px;
     max-height: 60px;
-    float: right;
+}
+
+p{
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.columnheader{
+    font-weight: bold;
+}
+
+.assignment_item{
+    text-align: center;
+}
+
+.filter_container{
+}
+
+.assignment_item :hover{
+    background-color: lightgrey;
 }

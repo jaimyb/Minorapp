@@ -16,26 +16,18 @@ export class CompanyeditassignmentComponent implements OnInit {
 
   Assignment: Assignment;
   Statuses: Array<AssignmentStatus>;
-  Ec = [{Id: 1, ec: 5},
-       {Id: 2, ec: 10},
-       {Id: 3, ec: 15}
-      ];
-  SelectedStatus: AssignmentStatus;
   Loaded: boolean;
   ParamSub: Array<any>;
   Succes: boolean;
   Error: boolean;
   AssignmentProfileUrl: string;
   Images: Array<AssignmentImage>;
-  AssignmentImageUrl: string;
   AssignmentPicture = null;
   DeletedImages: Array<AssignmentImage>;
 
   constructor(private assignmentService: AssignmentService, private route: ActivatedRoute, private router: Router) {
     this.Loaded = false;
     this.ParamSub = new Array<any>();
-    this.AssignmentProfileUrl = '/assets/images/profile.png';
-    this.AssignmentImageUrl = '/assets/images/plus.png';
     this.Images = new Array<AssignmentImage>();
     this.DeletedImages = new Array<AssignmentImage>();
    }
@@ -44,9 +36,7 @@ export class CompanyeditassignmentComponent implements OnInit {
     this.ParamSub.push( this.route.params.subscribe(params => {
       this.assignmentService.GetAssignmentById(params['opdrachtid']).subscribe(Assignment => {
         this.Assignment = Assignment;
-        if(Assignment.AssignmentImagePath != null){
-          this.AssignmentProfileUrl = Assignment.AssignmentImagePath;
-        }
+        this.AssignmentProfileUrl = Assignment.AssignmentImage.ImagePath;
         this.assignmentService.GetAllAssignmentStatuses().subscribe(statuses => {
           this.Statuses = statuses;
           this.assignmentService.GetImageDataByAssignmentId(params['opdrachtid']).subscribe(images =>{
@@ -74,7 +64,7 @@ export class CompanyeditassignmentComponent implements OnInit {
   }
 
   PostAssignment(){
-    this.ParamSub.push(this.assignmentService.PostAssignmentById(this.Assignment.Id, this.Assignment, this.AssignmentPicture).subscribe(bool =>{
+    this.ParamSub.push(this.assignmentService.PostAssignmentById(this.Assignment.Id, this.Assignment).subscribe(bool =>{
       let postImages = [];
       this.Images.forEach(image => {
         if(image.File != undefined){
@@ -99,11 +89,11 @@ export class CompanyeditassignmentComponent implements OnInit {
   }
 
   onProfileSelected(event){
-    this.AssignmentPicture = event.target.files[0];
+    this.Assignment.AssignmentImage.File = event.target.files[0];
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
       reader.onload = (event: any) => {
-          this.AssignmentProfileUrl = event.target.result;
+        this.Assignment.AssignmentImage.ImagePath = event.target.result;
       }
       reader.readAsDataURL(event.target.files[0]);
     }

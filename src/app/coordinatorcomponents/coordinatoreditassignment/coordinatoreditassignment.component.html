@@ -17,7 +17,7 @@
                 <div id="icon" class="valign-wrapper" > 
                     <i class="material-icons">edit</i>
                 </div>
-                <img class="assignmentProfile" [src]="AssignmentProfileUrl">
+                <img class="assignmentProfile" [src]="Assignment.AssignmentImage.ImagePath">
               </label>
               <input type="file" id="getFile" (change)="onProfileSelected($event)"/>
           </div>
@@ -32,6 +32,9 @@
     </div>
 
     <div class="row">
+      <div class="input-field col s12 center-align" *ngIf="Images.length <= 0">
+          <p>Voeg afbeeldingen toe</p>
+      </div>
       <div class="input-field col s12 center-align">
         <div class="imageshow center-align z-depth-1" *ngFor="let image of Images">
           <div class="image">
@@ -63,6 +66,21 @@
           </select>
         </div>
     </div>
+
+    <div class="row">
+      <div class="selectdiv col s6">
+        <label>Schooljaar</label>
+        <select [(ngModel)]="Assignment.SchoolYear" name="schoolyear">
+          <option *ngFor="let s of SchoolYears" [value]="s.schooljaar">{{s.schooljaar}}</option>
+        </select>
+      </div>
+      <div class="selectdiv col s6">
+        <label>Semester</label>
+        <select [(ngModel)]="Assignment.Semester" name="semester">
+          <option *ngFor="let s of Semesters" [value]="s.semester">{{s.semester}}</option>
+        </select>
+      </div>
+  </div>
 
     <div class="row">
           <div class="input-field col s12">

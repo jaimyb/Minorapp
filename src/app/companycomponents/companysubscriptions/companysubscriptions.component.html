@@ -1,24 +1,32 @@
 <div class="listcontainer" *ngIf="Loaded">
   <ul>
         <li class="filter_container z-depth-1">
-                <div class="row valign-wrapper">
-                    <div class="col l2 m2 s3">
-                        <label class="active" for="title">Zoeken</label>
-                        <input value="" name="title" [(ngModel)]="Search" id="title" type="text" class="validate">
-                    </div>
-                    <div class="col l2 m2 s2">
-                        
-                    </div>
-                    <div class="col l2 m2 s2">
-                        
-                    </div>
-                    <div class="col l2 m2 s2">
-                        
-                    </div>
-                    <div class="col l2 m2 s2">
-                        
-                    </div>
+            <div class="row valign-wrapper">
+                <div class="col l3 m3 s3">
+                    <label class="active" for="title">Zoeken</label>
+                    <input value="" name="title" [(ngModel)]="Search" id="title" type="text" class="validate">
                 </div>
+                <div class="col l3 m3 s3">
+                    <label>Status</label>
+                    <select [(ngModel)]="StatusFilter" name="status">
+                        <option [value]=""></option>
+                      <option *ngFor="let s of Statuses" [value]="s.Id">{{s.Status}}</option>
+                    </select>
+                </div>
+                <div class="col l3 m3 s3">
+                    <label>Jaar</label>
+                    <select [(ngModel)]="SchoolYearFilter" (change)="onYearChange($event)" name="year">
+                      <option *ngFor="let s of SchoolYears" [value]="s.schooljaar">{{s.schooljaar}}</option>
+                    </select>
+                </div>
+                <div class="col l3 m3 s3">
+                    <label>Semester</label>
+                    <select [(ngModel)]="SemesterFilter">
+                        <option [value]=""></option>
+                      <option *ngFor="let s of Semesters" [value]="s.semester">{{s.semester}}</option>
+                    </select>
+                  </div>
+            </div>
         </li>
         <li>
             <div class="row valign-wrapper">
@@ -40,10 +48,10 @@
             </div>
             <div class="divider"></div>
         </li>
-    <li class="assignment_item" *ngFor="let subscription of Subscriptions | orderBy:OrderByProp:true | searchFilter:Search ">
+    <li class="assignment_item" *ngFor="let subscription of Subscriptions | orderBy:OrderByProp:true | searchFilter:Search | statusFilter:StatusFilter | semesterFilter: SemesterFilter">
         <a [routerLink]="['/bedrijfintekeningdetail', subscription.Id]">
           <div class="row valign-wrapper">
-              <div class="col l2 m2 s3"><img id="companyimg" [src]="subscription.Assignment.AssignmentImagePath"></div>
+              <div class="col l2 m2 s3"><img id="companyimg" [src]="subscription.Assignment.AssignmentImage.ImagePath"></div>
               <div class="col l2 m2 s2">
                   <p>{{subscription.Assignment.Title}}</p>
               </div>

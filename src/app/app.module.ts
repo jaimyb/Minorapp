@@ -50,10 +50,21 @@ import { StudentsubscriptionsComponent } from './studentcomponents/studentsubscr
 import { CoordinatorassignmentsubscriptionsComponent } from './coordinatorcomponents/coordinatorassignmentsubscriptions/coordinatorassignmentsubscriptions.component';
 import { OrderBy } from './orderBy';
 import { SearchPipe } from './searchPipe';
+import { StatusPipe } from './statusPipe';
+import { SchoolYearPipe } from './schoolyearPipe';
+import { SemesterPipe } from './semesterPipe';
+import { ParseService } from './parse.service';
+import { CompanysignupComponent } from './companysignup/companysignup.component';
+import { CoordinatormanageComponent } from './coordinatorcomponents/coordinatormanage/coordinatormanage.component';
+import { PasswordlostComponent } from './passwordlost/passwordlost.component';
+import { RecoverpasswordComponent } from './recoverpassword/recoverpassword.component';
 
 
 @NgModule({
   declarations: [
+    SemesterPipe,
+    SchoolYearPipe,
+    StatusPipe,
     SearchPipe,
     OrderBy,
     AppComponent,
@@ -84,17 +95,23 @@ import { SearchPipe } from './searchPipe';
     CoordinatorsubscriptiondetailsComponent,
     CoordinatorsubscriptionsComponent,
     StudentsubscriptionsComponent,
-    CoordinatorassignmentsubscriptionsComponent
+    CoordinatorassignmentsubscriptionsComponent,
+    CompanysignupComponent,
+    CoordinatormanageComponent,
+    PasswordlostComponent,
+    RecoverpasswordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpModule,
-    FormsModule
+    FormsModule, 
+    ReactiveFormsModule
   ],
   providers: [AssignmentService, CompanyService, StudentService, GlobalService, SubscriptionService, AuthenticationService, DataService,
     CookieService,
-    RolegaurdService],
+    RolegaurdService,
+    ParseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

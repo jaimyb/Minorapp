@@ -3,6 +3,11 @@ import { Subscription } from '../../subscription';
 import { SubscriptionService } from '../../subscription.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../authentication.service';
+import { AssignmentStatus } from '../../assignmentstatus';
+import { SubscriptionStatus } from '../../subscriptionstatus';
+import { AssignmentService } from '../../assignment.service';
+import * as $ from 'jquery';
+import * as M from 'materialize-css';
 
 @Component({
   selector: 'app-companysubscriptions',
@@ -16,38 +21,50 @@ export class CompanysubscriptionsComponent implements OnInit {
   Loaded: boolean;
   Search: string;
   OrderByProp: string;
+  StatusFilter: string;
+  Statuses: Array<SubscriptionStatus>;
+  SchoolYearFilter: string;
+  SchoolYears: Array<string>;
+  SemesterFilter: string;
+  Semesters: Array<any>;
+  AssignmentId: string;
 
-  constructor(private subscriptionService: SubscriptionService, private route: ActivatedRoute, private authenticationService: AuthenticationService) { 
+  constructor(private assignmentService: AssignmentService, private subscriptionService: SubscriptionService, private route: ActivatedRoute, private authenticationService: AuthenticationService) { 
     this.ParamSub = new Array<any>();
+    this.AssignmentId = null;
+    this.SchoolYearFilter = this.GetSchoolyear();
     this.Loaded = false;
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params =>{
-      console.log(params);
-      if(params['opdrachtid'] != undefined){
-        this.ParamSub.push( this.route.params.subscribe(params => {
-          this.subscriptionService.GetAllSubscriptionsFromAssignmentId(params['opdrachtid']).subscribe(subscriptions =>{
-            this.Subscriptions = subscriptions;
-            this.Loaded = true;
+    this.ParamSub.push( 
+      this.subscriptionService.GetAllSubscriptionsByCompanyIdByYear(this.authenticationService.CurrentUser.BedrijfId, this.SchoolYearFilter).subscribe(subscriptions =>{
+        this.Subscriptions = subscriptions;
+        console.log(subscriptions);
+        this.subscriptionService.GetAllSubscriptionStatuses().subscribe(statuses =>{
+          this.Statuses = statuses;
+          this.assignmentService.GetAllAssignmentSchoolYears().subscribe(years =>{
+            this.SchoolYears = years;
+            this.assignmentService.GetAllAssignmentSemesters().subscribe(semesters =>{
+              this.Semesters = semesters;
+              this.Loaded = true;
+              setTimeout(() => {
+                this.InitMaterializeCSS();   
+              }, 1); 
+            }); 
           });
-        }));
-      }
-      else{
-        this.ParamSub.push( 
-          this.subscriptionService.GetAllSubscriptionsByCompanyId(this.authenticationService.CurrentUser.BedrijfId).subscribe(subscriptions =>{
-            this.Subscriptions = subscriptions;
-            this.Loaded = true;
-          })
-        );
-      }
-    });   
+        });
+      }));  
   }
 
   ngOnDestroy(): void {
     this.ParamSub.forEach(sub => {
       sub.unsubscribe();
     });
+  }
+
+  InitMaterializeCSS(){
+    M.AutoInit();
   }
 
   ChangeOrder(event){
@@ -65,6 +82,23 @@ export class CompanysubscriptionsComponent implements OnInit {
       case "Status":
         this.OrderByProp = "Subscription"
       break;
+    }
+  }
+
+  onYearChange(event){
+    this.ParamSub.push(
+      this.subscriptionService.GetAllSubscriptionsByCompanyIdByYear(this.authenticationService.CurrentUser.BedrijfId,this.SchoolYearFilter).subscribe(subscriptions =>{
+        this.Subscriptions = subscriptions;
+    }));
+  }
+  
+  GetSchoolyear(): string{
+    let year = Number(new Date().getFullYear());
+    if(new Date().getMonth() < 7){
+      return (year - 1).toString() + '-' + year.toString(); 
+    }
+    else{
+      return year.toString() + '-' + (year + 1).toString(); 
     }
   }
 

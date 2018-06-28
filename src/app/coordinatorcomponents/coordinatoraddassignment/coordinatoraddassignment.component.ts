@@ -15,10 +15,7 @@ import { AuthenticationService } from '../../authentication.service';
 })
 export class CoordinatoraddassignmentComponent implements OnInit {
 
-  AssignmentTitle: string;
-  AssignmentStatusId: number;
-  AssignmentEc: number;
-  AssignmentDescription: string;
+  Assignment: Assignment;
   ParamSub: Array<any>;
   Statuses: Array<AssignmentStatus>;
   Loaded: boolean;
@@ -27,23 +24,32 @@ export class CoordinatoraddassignmentComponent implements OnInit {
     {Id: 3, ec: 15}
    ];
   Error: boolean;
-  AssignmentImage: AssignmentImage;
   Images: Array<AssignmentImage>;
+  SchoolYears: Array<string>;
+  Semesters: Array<any>;
   
   constructor(private assignmentService: AssignmentService, private router: Router, private authenticationService: AuthenticationService) { 
+    this.Assignment = new Assignment();
+    this.Assignment.AssignmentImage = new AssignmentImage(null,'/assets/images/profile.png');
     this.ParamSub = new Array<any>();
-    this.AssignmentImage = new AssignmentImage(null,'/assets/images/profile.png');
     this.Images = new Array<AssignmentImage>();
+    this.SchoolYears = new Array<string>();
   }
 
   ngOnInit() {
     this.ParamSub.push( 
       this.assignmentService.GetAllAssignmentStatuses().subscribe(statuses => {
         this.Statuses = statuses;
-        this.Loaded = true;
-        setTimeout(() => {
-          this.InitMaterializeCSS();   
-        }, 1); 
+        this.assignmentService.GetAllAssignmentSchoolYears().subscribe(years =>{
+          this.SchoolYears = years;
+          this.assignmentService.GetAllAssignmentSemesters().subscribe(semesters =>{
+            this.Semesters = semesters;
+            this.Loaded = true;
+            setTimeout(() => {
+              this.InitMaterializeCSS();   
+            }, 1); 
+          });
+        });
       }));
   }
 
@@ -61,20 +67,20 @@ export class CoordinatoraddassignmentComponent implements OnInit {
   }
 
   onProfileSelected(event){
-    this.AssignmentImage.File = event.target.files[0];
+    this.Assignment.AssignmentImage.File = event.target.files[0];
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
       reader.onload = (event: any) => {
-          this.AssignmentImage.ImagePath = event.target.result;
+        this.Assignment.AssignmentImage.ImagePath = event.target.result;
       }
       reader.readAsDataURL(event.target.files[0]);
     }
   }
 
   PostAssignment(){
-    let assignment = new Assignment(null, this.AssignmentTitle, this.AssignmentDescription, this.AssignmentEc, this.AssignmentStatusId, this.authenticationService.CurrentUser.BedrijfId);
-    console.log(assignment);
-    this.ParamSub.push(this.assignmentService.PostAssignment(assignment, this.AssignmentImage.File).subscribe(response =>{
+    this.Assignment.CompanyId = this.authenticationService.CurrentUser.BedrijfId;
+    console.log(this.Assignment);
+    this.ParamSub.push(this.assignmentService.PostAssignment(this.Assignment).subscribe(response =>{
       if(response.ok){
         this.ParamSub.push(this.assignmentService.PostAssignmentImages(response.json().insertId, this.Images).subscribe(bool => {
           if(bool){

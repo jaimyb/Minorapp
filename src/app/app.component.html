@@ -15,6 +15,7 @@
           <li><a routerLink="/home" routerLinkActive="selected">Home</a></li>
           <li><a routerLink="/coordinatoropdrachten" routerLinkActive="selected">Opdrachten</a></li>
           <li><a routerLink="/coordinatorintekeningen" routerLinkActive="selected">Intekeningen</a></li>
+          <li><a routerLink="/coordinatorbeheer" routerLinkActive="selected">Beheer</a></li>
           <li class="logbutton"><a (click)="LogOff()">Uitloggen</a></li>
         </ul>
         <ul id="nav-mobile" class="agent-1" *ngIf="this.authenticationService.IsCurrentUserRoleCompany() && !this.authenticationService.IsCurrentUserRoleCoordinator() && this.authenticationService.Authenticated">

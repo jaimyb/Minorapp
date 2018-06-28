@@ -30,6 +30,10 @@ import { CompanyassignmentdetailsComponent } from '../companycomponents/companya
 import { CompanyeditassignmentComponent } from '../companycomponents/companyeditassignment/companyeditassignment.component';
 import { CompanysubscriptionsComponent } from '../companycomponents/companysubscriptions/companysubscriptions.component';
 import { CompanysubscriptiondetailsComponent } from '../companycomponents/companysubscriptiondetails/companysubscriptiondetails.component';
+import { CompanysignupComponent } from '../companysignup/companysignup.component';
+import { CoordinatormanageComponent } from '../coordinatorcomponents/coordinatormanage/coordinatormanage.component';
+import { PasswordlostComponent } from '../passwordlost/passwordlost.component';
+import { RecoverpasswordComponent } from '../recoverpassword/recoverpassword.component';
 
 
 const routes: Routes = [
@@ -48,6 +52,8 @@ const routes: Routes = [
   { path: 'bedrijfintekeningen', component: CompanysubscriptionsComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'bedrijf'}},
   { path: 'bedrijfprojectintekeningen/:opdrachtid', component: CompanysubscriptionsComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'bedrijf'}},
   { path: 'bedrijfintekeningdetail/:intekeningid', component: CompanysubscriptiondetailsComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'bedrijf'}},
+  { path: 'bedrijfregistreren', component: CompanysignupComponent},
+
 
   { path: 'coordinatoropdrachten', component: CoordinatorassignmentsComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'coordinator'}},
   { path: 'coordinatoropdrachtdetail/:opdrachtid', component: CoordinatorassignmentdetailsComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'coordinator'}},
@@ -56,6 +62,7 @@ const routes: Routes = [
   { path: 'coordinatorintekening/:intekeningid', component: CoordinatorsubscriptiondetailsComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'coordinator'}},
   { path: 'coordinatoraddopdracht', component: CoordinatoraddassignmentComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'coordinator'}},
   { path: 'coordinatorintekeningen', component: CoordinatorsubscriptionsComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'coordinator'}},
+  { path: 'coordinatorbeheer', component: CoordinatormanageComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'coordinator'}},
 
   { path: 'studentsignup', component: StudentsignupComponent },
   { path: 'studentintekeningdetail/:intekeningid', component: StudentsubscriptiondetailsComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'student'}},
@@ -64,6 +71,8 @@ const routes: Routes = [
   { path: 'studentopdrachtdetail/:opdrachtid', component: StudentassignmentdetailsComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'student'}},
   { path: 'studentintekeningen', component: StudentsubscriptionsComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'student'}},
   { path: 'signin', component: SigninComponent },
+  { path: 'wachtwoordvergeten', component: PasswordlostComponent},
+  { path: 'wachtwoordherstellen/:email/:code', component: RecoverpasswordComponent},
   { path: '**', redirectTo: '/home' }
 ];
 

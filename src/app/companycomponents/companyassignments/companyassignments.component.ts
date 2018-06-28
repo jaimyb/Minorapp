@@ -8,6 +8,8 @@ import { AssignmentImage } from '../../assignmentimage';
 import { AssignmentService } from '../../assignment.service';
 import * as $ from 'jquery';
 import * as M from 'materialize-css';
+import { AssignmentStatus } from '../../assignmentstatus';
+import { AuthenticationService } from '../../authentication.service';
 
 @Component({
   selector: 'app-companyassignments',
@@ -17,27 +19,40 @@ import * as M from 'materialize-css';
 export class CompanyassignmentsComponent implements OnInit {
 
   Assignments: Array<Assignment>
-  ComapanyImageUrl: string
   Loaded: boolean;
   ParamSub: Array<any>;
-  Images: Array<AssignmentImage>;
   OrderByProp: string;
   Search: string;
+  StatusFilter: string;
+  Statuses: Array<AssignmentStatus>;
+  SchoolYearFilter: string;
+  SchoolYears: Array<string>;
+  SemesterFilter: string;
+  Semesters: Array<any>; 
 
 
-  constructor(private ref: ChangeDetectorRef ,private assignmentService: AssignmentService, private router: Router, private globalService: GlobalService) { 
+  constructor(private authenticationService: AuthenticationService,private ref: ChangeDetectorRef ,private assignmentService: AssignmentService, private router: Router, private globalService: GlobalService) { 
     this.ParamSub = new Array<any>();
+    this.SchoolYearFilter = this.GetSchoolyear();
   }
 
   ngOnInit() {
     this.ParamSub.push(
-      this.assignmentService.GetAllAssignments().subscribe(result => {
+      this.assignmentService.GetAllAssignmentsByCompanyIdByYear(this.authenticationService.CurrentUser.BedrijfId ,this.SchoolYearFilter).subscribe(result => {
         this.Assignments = result;
-        console.log(result);
-        this.Loaded = true;
-        setTimeout(() => {
-          this.InitMaterializeCSS();   
-        }, 1); 
+        this.assignmentService.GetAllAssignmentStatuses().subscribe(statuses => {
+          this.Statuses = statuses;
+          this.assignmentService.GetAllAssignmentSchoolYears().subscribe(years => {
+            this.SchoolYears = years;
+            this.assignmentService.GetAllAssignmentSemesters().subscribe(semesters => {
+              this.Semesters = semesters;
+              this.Loaded = true;
+              setTimeout(() => {
+                this.InitMaterializeCSS();   
+              }, 1); 
+            });         
+          });
+        });  
       })
     );
   }
@@ -68,6 +83,24 @@ export class CompanyassignmentsComponent implements OnInit {
       case "Ec":
         this.OrderByProp = "Ec"
       break;
+    }
+  }
+
+  onYearChange(event){
+    this.ParamSub.push(
+      this.assignmentService.GetAllAssignmentsByCompanyIdByYear(this.authenticationService.CurrentUser.BedrijfId ,this.SchoolYearFilter).subscribe(result => {
+        this.Assignments = result;
+      }));
+  }
+
+  
+  GetSchoolyear(): string{
+    let year = Number(new Date().getFullYear());
+    if(new Date().getMonth() < 7){
+      return (year - 1).toString() + '-' + year.toString(); 
+    }
+    else{
+      return year.toString() + '-' + (year + 1).toString(); 
     }
   }
 

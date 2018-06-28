@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { GlobalService } from '../../global.service';
 import { Assignment } from '../../assignment';
 import { AssignmentImage } from '../../assignmentimage';
+import { AssignmentStatus } from '../../assignmentstatus';
+import * as $ from 'jquery';
+import * as M from 'materialize-css';
 
 @Component({
   selector: 'app-studentassignments',
@@ -19,17 +22,35 @@ export class StudentassignmentsComponent implements OnInit {
   Images: Array<AssignmentImage>;
   OrderByProp: string;
   Search: string;
+  StatusFilter: string;
+  Statuses: Array<AssignmentStatus>;
+  SchoolYearFilter: string;
+  SchoolYears: Array<string>;
+  SemesterFilter: string;
+  Semesters: Array<any>; 
 
   constructor(private assignmentService: AssignmentService, private router: Router, private globalService: GlobalService) { 
     this.ParamSub = new Array<any>();
- 
+    this.SchoolYearFilter = this.GetSchoolyear();
   }
 
   ngOnInit() {
     this.ParamSub.push(
-      this.assignmentService.GetAllAvailibleAssignments().subscribe(result => {
+      this.assignmentService.GetAllAvailibleAssignments(this.SchoolYearFilter).subscribe(result => {
         this.Assignments = result;
-        this.Loaded = true;
+        this.assignmentService.GetAllAssignmentStatuses().subscribe(statuses => {
+          this.Statuses = statuses;
+          this.assignmentService.GetAllAssignmentSchoolYears().subscribe(years => {
+            this.SchoolYears = years;
+            this.assignmentService.GetAllAssignmentSemesters().subscribe(semesters => {
+              this.Semesters = semesters;
+              this.Loaded = true;
+              setTimeout(() => {
+                this.InitMaterializeCSS();   
+              }, 1); 
+            });         
+          });
+        });  
       })
     );
   }
@@ -38,6 +59,10 @@ export class StudentassignmentsComponent implements OnInit {
     this.ParamSub.forEach(sub => {
       sub.unsubscribe();
     });
+  }
+
+  InitMaterializeCSS(){
+    M.AutoInit();
   }
 
   AssignmentClick(id){
@@ -58,4 +83,23 @@ export class StudentassignmentsComponent implements OnInit {
       break;
     }
   }
+
+  onYearChange(event){
+    this.ParamSub.push(
+      this.assignmentService.GetAllAvailibleAssignments(this.SchoolYearFilter).subscribe(result => {
+        this.Assignments = result;
+      }));
+  }
+
+  
+  GetSchoolyear(): string{
+    let year = Number(new Date().getFullYear());
+    if(new Date().getMonth() < 7){
+      return (year - 1).toString() + '-' + year.toString(); 
+    }
+    else{
+      return year.toString() + '-' + (year + 1).toString(); 
+    }
+  }
+
 }

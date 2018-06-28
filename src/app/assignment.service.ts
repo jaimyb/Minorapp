@@ -8,6 +8,7 @@ import { CompanyService } from './company.service';
 import { Company } from './company';
 import { AssignmentStatus } from './assignmentstatus';
 import { AssignmentImage } from './assignmentimage';
+import { ParseService } from './parse.service';
 
 @Injectable()
 export class AssignmentService {
@@ -15,25 +16,34 @@ export class AssignmentService {
   Url = "/api/assignments/";
   Assignment: Assignment;
 
-  constructor(private http: Http, private companyService: CompanyService) { }
+  constructor(private http: Http, private companyService: CompanyService, private parse: ParseService) { }
 
-  GetAllAssignments(): Observable<Array<Assignment>>{
-    return this.http.get(this.Url).map(response => {
+  GetAllAssignmentsByCompanyIdByYear(id,year): Observable<Array<Assignment>>{
+    return this.http.get(this.Url + 'bycompanyid/' + id + '/' + year).map(response => {
       let opdrachten = new Array<Assignment>();
       response.json().forEach(opdracht => {
-        let bedrijf = new Company(opdracht.bedrijfid, opdracht.naam, opdracht.email, opdracht.telefoonnummer);
-        opdrachten.push(new Assignment(opdracht.OpdrachtID, opdracht.titel, opdracht.beschrijving, opdracht.ec, opdracht.opdrachtstatusid, opdracht.bedrijfid ,opdracht.opdrachtstatus, bedrijf,  'http://localhost:3000/' + opdracht.opdrachtafbeelding));
+        console.log(this.parse.JsonToAssignment(opdracht));
+        opdrachten.push(this.parse.JsonToAssignment(opdracht));
       });
       return opdrachten;
     });
   }
 
-  GetAllAvailibleAssignments(): Observable<Array<Assignment>>{
-    return this.http.get(this.Url + 'availible').map(response => {
+  GetAllAssignmentsByYear(year): Observable<Array<Assignment>>{
+    return this.http.get(this.Url + 'byschoolyear/' + year).map(response => {
       let opdrachten = new Array<Assignment>();
       response.json().forEach(opdracht => {
-        let bedrijf = new Company(opdracht.bedrijfid, opdracht.naam, opdracht.email, opdracht.telefoonnummer);
-        opdrachten.push(new Assignment(opdracht.OpdrachtID, opdracht.titel, opdracht.beschrijving, opdracht.ec, opdracht.opdrachtstatusid, opdracht.bedrijfid ,opdracht.opdrachtstatus, bedrijf,  'http://localhost:3000/' + opdracht.opdrachtafbeelding));
+        opdrachten.push(this.parse.JsonToAssignment(opdracht));
+      });
+      return opdrachten;
+    });
+  }
+
+  GetAllAvailibleAssignments(year): Observable<Array<Assignment>>{
+    return this.http.get(this.Url + 'availible/' + year).map(response => {
+      let opdrachten = new Array<Assignment>();
+      response.json().forEach(opdracht => {
+        opdrachten.push(this.parse.JsonToAssignment(opdracht));
       });
       return opdrachten;
     });
@@ -42,10 +52,8 @@ export class AssignmentService {
   GetAssignmentById(id): Observable<Assignment>{
     return this.http.get(this.Url + 'byid/' + id).map(response => {
       let opdracht = response.json()[0];
-      let bedrijf = new Company(opdracht.bedrijfid, opdracht.naam, opdracht.email, opdracht.telefoonnummer);
-      opdracht = new Assignment(opdracht.OpdrachtID, opdracht.titel, opdracht.beschrijving, opdracht.ec, opdracht.opdrachtstatusid, opdracht.bedrijfid ,opdracht.opdrachtstatus, bedrijf, ('http://localhost:3000/' + opdracht.opdrachtafbeelding));
-      
-      return opdracht;
+      console.log(this.parse.JsonToAssignment(opdracht));
+      return this.parse.JsonToAssignment(opdracht);
     });
   }
 
@@ -53,11 +61,32 @@ export class AssignmentService {
     return this.http.get(this.Url + 'statuses').map(response => {
       let json = response.json();
       let statuses = new Array<AssignmentStatus>();
-
       json.forEach(status => {
         statuses.push(new AssignmentStatus(status.OpdrachtSID, status.opdrachtstatus));
       });
       return statuses;
+    });
+  }
+
+  GetAllAssignmentSchoolYears(): Observable<string[]>{
+    return this.http.get(this.Url + 'schoolyears').map(response => {
+      let json = response.json();
+      let years = new Array<string>();
+      json.forEach(year => {
+        years.push(year);
+      });
+      return years;
+    });
+  }
+
+  GetAllAssignmentSemesters(): Observable<Array<any>>{
+    return this.http.get(this.Url + 'semesters').map(response => {
+      let json = response.json();
+      let semesters = new Array<any>();
+      json.forEach(semester => {
+        semesters.push(semester);
+      });
+      return semesters;
     });
   }
 
@@ -74,21 +103,20 @@ export class AssignmentService {
     });
   }
 
-  PostAssignment(assignment: Assignment, assignmentPicture: File): Observable<any>{
-    console.log(assignment);
+  PostAssignment(assignment: Assignment): Observable<any>{
     let fd = new FormData();
     fd.append('titel', assignment.Title);
     fd.append('beschrijving', assignment.Description);
     fd.append('opdrachtstatusid', assignment.StatusId.toString());
     fd.append('ec', assignment.Ec.toString());
+    fd.append('semester', assignment.Semester.toString());
+    fd.append('schooljaar', assignment.SchoolYear);
     fd.append('bedrijfid', assignment.CompanyId.toString());
-    if(assignmentPicture != undefined)
+    if(assignment.AssignmentImage != undefined)
     {
-      fd.append('opdrachtAfbeelding', assignmentPicture, assignmentPicture.name);
+      fd.append('opdrachtAfbeelding', assignment.AssignmentImage.File, assignment.AssignmentImage.File.name);
     }
-    ;
     return this.http.post(this.Url + 'post', fd).map(response => {
-      console.log(response.json().insertId);
       return response;
     });
   }
@@ -112,14 +140,12 @@ export class AssignmentService {
 
   PostAssignmentImages(id,images: Array<AssignmentImage>): Observable<boolean>{
     let fd = new FormData();
-    console.log(images);
     images.forEach(image => {
       if(image.File != undefined){
         fd.append('opdrachtAfbeeldingen', image.File, image.File.name);
       }     
     });
     return this.http.post(this.Url + 'uploadimages/' + id, fd).map(response => {
-      console.log(response);
       if(response.ok){
         return true;
       }
@@ -129,15 +155,18 @@ export class AssignmentService {
     });
   }
 
-  PostAssignmentById(id, assignment: Assignment, assignmentPicture: File): Observable<boolean>{
+  PostAssignmentById(id, assignment: Assignment): Observable<boolean>{
     let fd = new FormData();
     fd.append('titel', assignment.Title);
     fd.append('beschrijving', assignment.Description);
     fd.append('opdrachtstatusid', assignment.StatusId.toString());
     fd.append('ec', assignment.Ec.toString());
-    if(assignmentPicture != undefined)
+    fd.append('semester', assignment.Semester.toString());
+    fd.append('schooljaar', assignment.SchoolYear);
+    fd.append('bedrijfid', assignment.CompanyId.toString());
+    if(assignment.AssignmentImage != undefined && assignment.AssignmentImage.File != undefined)
     {
-      fd.append('opdrachtAfbeelding', assignmentPicture, assignmentPicture.name);
+      fd.append('opdrachtAfbeelding', assignment.AssignmentImage.File, assignment.AssignmentImage.File.name);
     }
     
     return this.http.post(this.Url + 'update/' + id, fd).map(response => {

@@ -27,34 +27,37 @@ export class CoordinatoreditassignmentComponent implements OnInit {
   Error: boolean;
   AssignmentProfileUrl: string;
   Images: Array<AssignmentImage>;
-  AssignmentImageUrl: string;
-  AssignmentPicture = null;
   DeletedImages: Array<AssignmentImage>;
+  SchoolYears: Array<string>;
+  Semesters: Array<any>;
 
   constructor(private assignmentService: AssignmentService, private route: ActivatedRoute, private router: Router) {
     this.Loaded = false;
     this.ParamSub = new Array<any>();
-    this.AssignmentProfileUrl = '/assets/images/profile.png';
-    this.AssignmentImageUrl = '/assets/images/plus.png';
     this.Images = new Array<AssignmentImage>();
     this.DeletedImages = new Array<AssignmentImage>();
+    this.SchoolYears = new Array<string>(); 
    }
 
   ngOnInit() {
     this.ParamSub.push( this.route.params.subscribe(params => {
       this.assignmentService.GetAssignmentById(params['opdrachtid']).subscribe(Assignment => {
         this.Assignment = Assignment;
-        if(Assignment.AssignmentImagePath != null){
-          this.AssignmentProfileUrl = Assignment.AssignmentImagePath;
-        }
         this.assignmentService.GetAllAssignmentStatuses().subscribe(statuses => {
           this.Statuses = statuses;
           this.assignmentService.GetImageDataByAssignmentId(params['opdrachtid']).subscribe(images =>{
             this.Images = images;
-            this.Loaded = true;
-            setTimeout(() => {
-              this.InitMaterializeCSS();   
-            }, 1); 
+            this.assignmentService.GetAllAssignmentSchoolYears().subscribe(years =>{
+              this.SchoolYears = years;
+              console.log(this.SchoolYears)
+              this.assignmentService.GetAllAssignmentSemesters().subscribe(semesters =>{
+                this.Semesters = semesters;
+                this.Loaded = true;
+                setTimeout(() => {
+                  this.InitMaterializeCSS();   
+                }, 1);
+              });
+            });
           });
         });
       });
@@ -74,7 +77,7 @@ export class CoordinatoreditassignmentComponent implements OnInit {
   }
 
   PostAssignment(){
-    this.ParamSub.push(this.assignmentService.PostAssignmentById(this.Assignment.Id, this.Assignment, this.AssignmentPicture).subscribe(bool =>{
+    this.ParamSub.push(this.assignmentService.PostAssignmentById(this.Assignment.Id, this.Assignment).subscribe(bool =>{
       let postImages = [];
       this.Images.forEach(image => {
         if(image.File != undefined){
@@ -99,11 +102,11 @@ export class CoordinatoreditassignmentComponent implements OnInit {
   }
 
   onProfileSelected(event){
-    this.AssignmentPicture = event.target.files[0];
+    this.Assignment.AssignmentImage.File = event.target.files[0];
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
       reader.onload = (event: any) => {
-          this.AssignmentProfileUrl = event.target.result;
+        this.Assignment.AssignmentImage.ImagePath = event.target.result;
       }
       reader.readAsDataURL(event.target.files[0]);
     }

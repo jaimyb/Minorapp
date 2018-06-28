@@ -17,4 +17,19 @@
       <a (click)="LogIn()" (keydown.enter)="LogIn() " class="waves-effect waves-light btn appbutton">Inloggen</a>
     </div>
   </form>
+  <div class="row">
+    <div class="col s12 center-align">
+      <a [routerLink]="['/studentsignup']">Registreren als student</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12 center-align">
+      <a [routerLink]="['/bedrijfregistreren']">Bedrijftoken ontvangen? Registreer hier!</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12 center-align">
+      <a [routerLink]="['/wachtwoordvergeten']">Wachtwoord vergeten? Herstel hem hier!</a>
+    </div>
+  </div>
 </div>

@@ -3,8 +3,8 @@ img{
     width: 100%;
     max-width: 60px;
     max-height: 60px;
-    float: right;
 }
+
 li{
     -o-transition:.5s;
   -ms-transition:.5s;

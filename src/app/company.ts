@@ -5,7 +5,7 @@ export class Company{
     Email: string;
     Phonenumber: string;
     
-    constructor(id: number = null, name: string, email: string, phonenumber: string){
+    constructor(id: number = null, name: string = null, email: string = null, phonenumber: string = null){
         this.ID = id;
         this.Name = name;
         this.Email = email;

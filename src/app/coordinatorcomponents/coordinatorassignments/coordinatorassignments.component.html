@@ -1,24 +1,32 @@
 <div class="listcontainer" *ngIf="Loaded">
   <ul>
         <li class="filter_container z-depth-1">
-                <div class="row valign-wrapper">
-                    <div class="col l2 m2 s3">
-                        <label class="active" for="title">Zoeken</label>
-                        <input value="" name="title" [(ngModel)]="Search" id="title" type="text" class="validate">
-                    </div>
-                    <div class="col l2 m2 s2">
-                        
-                    </div>
-                    <div class="col l2 m2 s2">
-                        
-                    </div>
-                    <div class="col l2 m2 s2">
-                        
-                    </div>
-                    <div class="col l2 m2 s2">
-                        
-                    </div>
+            <div class="row valign-wrapper">
+                <div class="col l3 m3 s3">
+                    <label class="active" for="title">Zoeken</label>
+                    <input value="" name="title" [(ngModel)]="Search" id="title" type="text" class="validate">
                 </div>
+                <div class="col l3 m3 s3">
+                    <label>Status</label>
+                    <select [(ngModel)]="StatusFilter" name="status">
+                        <option [value]=""></option>
+                      <option *ngFor="let s of Statuses" [value]="s.Id">{{s.Status}}</option>
+                    </select>
+                </div>
+                <div class="col l3 m3 s3">
+                    <label>Jaar</label>
+                    <select [(ngModel)]="SchoolYearFilter" (change)="onYearChange($event)" name="year">
+                      <option *ngFor="let s of SchoolYears" [value]="s.schooljaar">{{s.schooljaar}}</option>
+                    </select>
+                </div>
+                <div class="col l3 m3 s3">
+                    <label>Semester</label>
+                    <select [(ngModel)]="SemesterFilter">
+                        <option [value]=""></option>
+                      <option *ngFor="let s of Semesters" [value]="s.semester">{{s.semester}}</option>
+                    </select>
+                  </div>
+            </div>
         </li>
         <li>
             <div class="row valign-wrapper">
@@ -32,18 +40,18 @@
                     <p (click)="ChangeOrder($event)"  (ngModelChange)="OrderByProp=$event" class="columnheader">Bedrijf</p>
                 </div>
                 <div class="col l2 m2 s3">
-                    <p (click)="ChangeOrder($event)" (ngModelChange)="OrderByProp=$event" class="columnheader">Ec</p>
+                    <p (click)="ChangeOrder($event)" (ngModelChange)="OrderByProp=$event" class="columnheader">Status</p>
                 </div>
                 <div class="col l2 m2 s2">
-                    <p (click)="ChangeOrder($event)" (ngModelChange)="OrderByProp=$event" class="columnheader">Status</p>
+                    <p (click)="ChangeOrder($event)" (ngModelChange)="OrderByProp=$event" class="columnheader">Ec</p>
                 </div>
             </div>
             <div class="divider"></div>
         </li>
-      <li class="assignment_item" *ngFor="let assignment of Assignments | orderBy:OrderByProp:true | searchFilter:Search">
+      <li class="assignment_item" *ngFor="let assignment of Assignments | orderBy:OrderByProp:true | searchFilter:Search | statusFilter:StatusFilter | schoolyearFilter: SchoolYearFilter | semesterFilter: SemesterFilter">
           <a [routerLink]="['/coordinatoropdrachtdetail', assignment.Id]">
             <div class="row valign-wrapper">
-                <div class="col l2 m2 s3"><img id="companyimg" [src]="assignment.AssignmentImagePath"></div>
+                <div class="col l2 m2 s3"><img id="companyimg" [src]="assignment.AssignmentImage.ImagePath"></div>
                 <div class="col l2 m2 s2">
                     <p>{{assignment.Title}}</p>
                 </div>
