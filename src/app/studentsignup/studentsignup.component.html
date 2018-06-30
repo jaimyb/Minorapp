@@ -1,35 +1,30 @@
 <div class="formcontainer z-depth-1">
-  <div class="row header"><h5 class="col s12">Aanmelden als student</h5></div>
+  <div class="row header"><h5 class="col s12 registration_header">Registreren student</h5></div>
   <form (ngSubmit)="SignUp()"  [formGroup]="form">
     <div class="row">
       <div class="col s12">
         <input placeholder="E-Mail" name="email" [(ngModel)]="User.Email" id="email" type="text" class="" formControlName="email">
-        <label for="email">E-Mail</label>
       </div>
     </div>
     <div class="row">
       <div class="col s12">
         <input placeholder="Wachtwoord" name="password" [(ngModel)]="User.Password" id="password" type="password" class="" formControlName="password">
-        <label for="password">Wachtwoord</label>
-        <p>Wachtwoord moet bestaan uit 8 karakters met minimaal een hoofdletter, een cijfer en een speciaalteken.</p>
+        <label for="password">Wachtwoord moet bestaan uit 8 karakters met minimaal een hoofdletter, een cijfer en een speciaalteken.</label>
       </div>
     </div>
     <div class="row">
         <div class="col s12">
           <input placeholder="Herhaal wachtwoord" name="confirmPassword"  id="confirmPassword" type="password" formControlName="confirmPassword">
-          <label for="confrmPassword">Herhaal wachtwoord</label>
         </div>
       </div>
     <div class="row">
       <div class="col s12">
         <input placeholder="Voornaam" name="name" [(ngModel)]="Student.Name" id="name" type="text" class="" formControlName="name">
-        <label for="name">Voornaam</label>
       </div>
     </div>
     <div class="row">
       <div class="col s12">
         <input placeholder="Achternaam" name="surname" [(ngModel)]="Student.Surname" id="surname" type="text" class="" formControlName="surname">
-        <label for="surname">Achternaam</label>
       </div>
     </div>
     <div class="row buttonrow">

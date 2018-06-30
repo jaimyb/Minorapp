@@ -1,38 +1,40 @@
 <div class="formcontainer z-depth-1">
-  <div class="row header"><h5 class="col s12">Aanmelden als bedrijf</h5></div>
-  <div class="row">
-      <div class="col s12">
-        <label for="name">Code</label>
-        <input name="code" [(ngModel)]="Code" id="code" type="text" class="validate">
+  <div class="row header"><h5 class="col s12">Registreren Bedrijf</h5></div>
+  
+  <form (ngSubmit)="SignUp()" [formGroup]="form">
+      <div class="row">
+          <div class="col s12">
+            <input placeholder="Registratiecode" name="code" [(ngModel)]="Code" id="code" type="text" class="" formControlName="code">
+          </div>
       </div>
-  </div>
-  <form>
     <div class="row">
         <div class="col s12">
-          <label for="name">Naam</label>
-          <input name="name" [(ngModel)]="Company.Name" id="name" type="text" class="validate">
+          <input placeholder="Bedrijfsnaam" name="name" [(ngModel)]="Company.Name" id="name" type="text" class="" formControlName="name">
         </div>
       </div>
       <div class="row">
         <div class="col s12">
-          <label for="surname">Telefoonnummer</label>
-          <input name="surname" [(ngModel)]="Company.Phonenumber" id="surname" type="text" class="validate">
+          <input placeholder="Telefoonnummer" name="phonenumber" [(ngModel)]="Company.Phonenumber" id="phonenumber" type="text" class="" formControlName="phonenumber">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <input placeholder="E-Mail" name="email" [(ngModel)]="User.Email" id="email" type="text" class="" formControlName="email">
         </div>
       </div>
     <div class="row">
-      <div class="col s12">
-        <label for="email">E-Mail</label>
-        <input name="email" [(ngModel)]="User.Email" id="email" type="text" class="validate">
+        <div class="col s12">
+          <input placeholder="Wachtwoord" name="password" [(ngModel)]="User.Password" id="password" type="password" class="" formControlName="password">
+          <label for="password">Wachtwoord moet bestaan uit 8 karakters met minimaal een hoofdletter, een cijfer en een speciaalteken.</label>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col s12">
-        <label for="password">Wachtwoord</label>
-        <input name="password" [(ngModel)]="User.Password" id="password" type="password" class="validate">
-      </div>
-    </div>
+      <div class="row">
+          <div class="col s12">
+            <input placeholder="Herhaal wachtwoord" name="confirmPassword"  id="confirmPassword" type="password" formControlName="confirmPassword">
+          </div>
+        </div>
     <div class="row buttonrow">
-      <a (click)="SignUp()" class="waves-effect waves-light btn appbutton">Aanmelden</a>
+        <button type="submit" class="btn appbutton" [disabled]="!form.valid">Registreren</button>
     </div>
   </form>
 </div>

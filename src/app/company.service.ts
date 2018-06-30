@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-
 import "rxjs/add/operator/map";
 import { Company } from './company';
 import { ParseService } from './parse.service';

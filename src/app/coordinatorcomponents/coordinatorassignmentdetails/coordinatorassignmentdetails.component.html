@@ -7,13 +7,13 @@
         </div>
     </div>
     <div class="divider"></div>
-    <a [routerLink]="['/coordinatorprojectintekeningen', Assignment.Id]">
+    <a [routerLink]="['/coordinatorprojectintekeningen', Assignment.Id]" *ngIf="!Students.length <= 0">
         <div id="participants" class="assignment_row">
             <h5 id="participants_header">Deelnemers</h5>
             <span *ngFor="let student of Students">{{student.Name}} {{student.Surname}}</span>
         </div>
     </a>
-    <div class="divider"></div>
+    <div class="divider" *ngIf="!Students.length <= 0"></div>
     <div class="assignment_row" *ngIf="Images.length > 0">
         <div class="carousel carousel-slider center">
             <div *ngFor="let image of Images" class="center-align carousel-item white white-text" href="#one!">

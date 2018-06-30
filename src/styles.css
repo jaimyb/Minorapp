@@ -109,6 +109,21 @@ html{
     height: 100%;
 }
 
+
+/* bestand kiezen knop styling van de fotocarousel */
+.bestand_label{
+    width: 100%;
+    height: 100%;
+    color: white;
+}
+.bestand_input{
+    display: none;
+}
+.bestand_button{
+    padding: 0;
+    min-width: 100px;
+}
+
 ul {
     list-style-type: none;
     margin: 0;

@@ -40,6 +40,7 @@ export class CoordinatorassignmentdetailsComponent implements OnInit {
         this.Assignment = Assignment;
         this.ParamSub.push(this.studentService.GetStudentsByProjectId(this.Assignment.Id).subscribe(result => {
           this.Students = result;
+          console.log(this.Students.length);
           this.ParamSub.push(this.assignmentService.GetImageDataByAssignmentId(params['opdrachtid']).subscribe(images =>{
             this.Images = images;
             this.Loaded = true;
