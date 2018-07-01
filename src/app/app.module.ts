@@ -58,6 +58,7 @@ import { CompanysignupComponent } from './companysignup/companysignup.component'
 import { CoordinatormanageComponent } from './coordinatorcomponents/coordinatormanage/coordinatormanage.component';
 import { PasswordlostComponent } from './passwordlost/passwordlost.component';
 import { RecoverpasswordComponent } from './recoverpassword/recoverpassword.component';
+import { JwtinterceptorService } from './interceptors/jwtinterceptor.service';
 
 
 @NgModule({
@@ -111,7 +112,8 @@ import { RecoverpasswordComponent } from './recoverpassword/recoverpassword.comp
   providers: [AssignmentService, CompanyService, StudentService, GlobalService, SubscriptionService, AuthenticationService, DataService,
     CookieService,
     RolegaurdService,
-    ParseService],
+    ParseService,
+    JwtinterceptorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

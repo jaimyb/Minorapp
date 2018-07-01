@@ -179,6 +179,8 @@ export class AssignmentService {
     });
   }
 
+  Get
+
   DeleteImageById(id): Observable<boolean>{
     return this.http.get(this.Url + 'deleteimage/' + id).map(response =>{
       if(response.ok){

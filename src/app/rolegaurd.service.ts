@@ -15,30 +15,49 @@ const helper = new JwtHelperService();
 @Injectable()
 export class RolegaurdService implements CanActivate {
 
-  
+
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
-    let token = JSON.parse( this.cookieService.get('minorappl')).token;
-    if(token == ''){
+    let token = JSON.parse(this.cookieService.get('minorappl')).token;
+    if (token == '') {
       this.router.navigate(['signin']);
       this.authenticationService.Authenticated = false;
       return false;
-      }
-      if(this.authenticationService.CurrentUser == undefined){
-        let payload = helper.decodeToken(token);
-        this.authenticationService.CurrentUser = new CurrentUser(payload.email, payload.roles, payload.studentid, payload.bedrijfid, payload.coordinatorid);
-      }
-    if(!helper.isTokenExpired(token) && this.authenticationService.CurrentUser.Roles.indexOf(route.data.expectedRole) >= 0)
-    {
-      console.log(this.authenticationService.CurrentUser.Roles.indexOf(route.data.expectedRole));
-      console.log('test');
-      this.authenticationService.Authenticated = true;
-      return true;
+    }
+    else {
+      let body = { token: token };
+      return this.http.post(this.Url + "/authenticatejwt", body).map(response => {
+        console.log(response);
+        if (response.json().success) {
+          if (this.authenticationService.CurrentUser == undefined) {
+            let payload = helper.decodeToken(token);
+            this.authenticationService.CurrentUser = new CurrentUser(payload.email, payload.roles, payload.studentid, payload.bedrijfid, payload.coordinatorid);
+          }
+          this.authenticationService.Authenticated = true;
+          if (this.authenticationService.CurrentUser != undefined && this.authenticationService.Authenticated) {
+            if (route.data.expectedRole == "bedrijf") {
+              return this.authenticationService.IsCurrentUserRoleCompany();
+            }
+            if (route.data.expectedRole == "student") {
+              return this.authenticationService.IsCurrentUserRoleStudent();
+            }
+            if (route.data.expectedRole == "coordinator") {
+              return this.authenticationService.IsCurrentUserRoleCoordinator();
+            }
+            else{
+              return false;
+            }
+          }
+        }
+        else {
+          return false;
+        }
+      });
     }
   }
 
   Url = "/api/authentication";
 
-  constructor(private http: Http, private authenticationService: AuthenticationService,private cookieService: CookieService, private router: Router) { 
+  constructor(private http: Http, private authenticationService: AuthenticationService, private cookieService: CookieService, private router: Router) {
 
   }
 

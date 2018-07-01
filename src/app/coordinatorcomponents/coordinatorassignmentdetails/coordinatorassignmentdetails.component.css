@@ -62,3 +62,20 @@ span{
     right: 0;  
     margin: auto;
 }
+
+a {
+    color: black;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: none;
+  }
+  
+  a:active {
+    color: black;
+  }
+  
+  a:visited {
+    color: black;
+  }

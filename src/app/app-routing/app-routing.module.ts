@@ -52,7 +52,7 @@ const routes: Routes = [
   { path: 'bedrijfintekeningen', component: CompanysubscriptionsComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'bedrijf'}},
   { path: 'bedrijfprojectintekeningen/:opdrachtid', component: CompanysubscriptionsComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'bedrijf'}},
   { path: 'bedrijfintekeningdetail/:intekeningid', component: CompanysubscriptiondetailsComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'bedrijf'}},
-  { path: 'bedrijfregistreren', component: CompanysignupComponent},
+  { path: 'bedrijfregistreren/:code', component: CompanysignupComponent},
 
 
   { path: 'coordinatoropdrachten', component: CoordinatorassignmentsComponent, canActivate: [ RolegaurdService ], data: {expectedRole: 'coordinator'}},

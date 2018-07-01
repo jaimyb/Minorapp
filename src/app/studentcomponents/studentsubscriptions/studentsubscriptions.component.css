@@ -32,3 +32,20 @@ p{
 .assignment_item :hover{
     background-color: lightgrey;
 }
+
+a {
+    color: black;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: none;
+  }
+  
+  a:active {
+    color: black;
+  }
+  
+  a:visited {
+    color: black;
+  }

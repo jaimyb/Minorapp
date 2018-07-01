@@ -22,51 +22,51 @@ export class StudentsignupComponent implements OnInit {
   Student: Student;
   Loaded: boolean;
   form: FormGroup;
-  
-  constructor(private authenticationService: AuthenticationService, private router: Router,private fb: FormBuilder) {
+
+  constructor(private authenticationService: AuthenticationService, private router: Router, private fb: FormBuilder) {
     this.User = new NewUser();
     this.Student = new Student();
 
     this.form = fb.group({
-        email: ['', Validators.required, this.IsEmailValid],
-        password: ['', Validators.required, this.IsPasswordValid],
-        confirmPassword: ['', Validators.required],
-        name: ['', Validators.required],
-        surname: ['', Validators.required]
-      },{
+      email: ['', Validators.required, this.IsEmailValid],
+      password: ['', Validators.required, this.IsPasswordValid],
+      confirmPassword: ['', Validators.required],
+      name: ['', Validators.required],
+      surname: ['', Validators.required]
+    }, {
         validator: PasswordValidation.MatchPassword,
       });
-   }
+  }
 
-  IsEmailValid(input: FormControl){
+  IsEmailValid(input: FormControl) {
     let email = input.value;
     let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     console.log(email, regex, regex.test(email));
     return Observable.of(regex.test(email)).map(result => {
-      return !result ? { IsEmailValid: true} : null;
+      return !result ? { IsEmailValid: true } : null;
     });
   }
 
-  IsPasswordValid(input: FormControl){
+  IsPasswordValid(input: FormControl) {
     let password = input.value;
     let regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
     console.log(password, regex, regex.test(password));
     return Observable.of(regex.test(password)).map(result => {
-      return !result ? { IsPasswordValid: true} : null;
+      return !result ? { IsPasswordValid: true } : null;
     });
   }
 
-  
+
 
 
   ngOnInit() {
     this.Loaded = true;
   }
 
-  SignUp(){
-   this.authenticationService.StudentSignUp(this.User,this.Student).subscribe(result =>{
-     this.router.navigate(['/home']);
-   }); 
+  SignUp() {
+    this.authenticationService.StudentSignUp(this.User, this.Student).subscribe(result => {
+      this.router.navigate(['/home']);
+    });
   }
 
 }

@@ -135,7 +135,8 @@ export class AuthenticationService {
   AuthenticateJwt(token: string): Observable<boolean>{
     let body = { token: token };
     return this.http.post(this.Url + "/authenticatejwt", body).map(response =>{
-      if(response.ok){
+      console.log(response);
+      if(response.json().success){
         this.Authenticated = true;
         return true;
       }

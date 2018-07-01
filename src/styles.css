@@ -109,6 +109,10 @@ html{
     height: 100%;
 }
 
+a :hover{
+    color: black !important;
+}
+
 
 /* bestand kiezen knop styling van de fotocarousel */
 .bestand_label{
@@ -124,6 +128,13 @@ html{
     min-width: 100px;
 }
 
+/* geeft alle forms een beetje ruimte om zich heen */
+.form_row{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
 ul {
     list-style-type: none;
     margin: 0;
@@ -138,24 +149,14 @@ ul {
 .header{
     width: 100%;
     text-align: center;
+    background-color: #5d88ff !important;
 }
 
-a {
-    color: black;
-    text-decoration: none;
-  }
-  
-  a:hover {
-    text-decoration: none;
-  }
-  
-  a:active {
-    color: black;
-  }
-  
-  a:visited {
-    color: black;
-  }
+.header_text{
+    margin: 10px;
+    color: white;
+}
+
 
 .formcontainer{
     -webkit-animation: fadein 0.4s; /* Safari, Chrome and Opera > 12.1 */
@@ -166,6 +167,9 @@ a {
 
     max-width: 500px;
     margin: 10px auto 10px auto;
+    border-color: #5d88ff;
+    border-style: solid;
+    border-width: 1px;
 }
 
 @media only screen and (max-width : 480px) {
