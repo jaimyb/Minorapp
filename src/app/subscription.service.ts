@@ -20,12 +20,14 @@ export class SubscriptionService {
 
   GetAllSubscriptionsByYear(year):Observable<Array<Subscription>>{
     return this.http.get(this.Url + 'all/' + year).map(response => {
+      console.log(response);
       let json = response.json();
       let subscriptions = new Array<Subscription>();
       
       json.forEach(subscription => {
-        this.parse.JsonToSubscription(subscription);
+        subscriptions.push(this.parse.JsonToSubscription(subscription));
       });
+      console.log(subscriptions);
       return subscriptions;
     });
   }

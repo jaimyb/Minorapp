@@ -1,32 +1,28 @@
 <div class="objectcontainer z-depth-1" *ngIf="Loaded">
-    <div class="row header"><h5 class="col s12">Opdracht toevoegen</h5></div>
-    <div *ngIf="Succes" class="row">
-      <div class="col s12 m12 l12">
-        <div class="card teal lighten-2">
-          <div class="card-content white-text">
-            <span class="card-title message">Succes!</span>
-          </div>
+  <div class="row header">
+    <h5 class="col s12 header_text">Opdracht toevoegen</h5>
+  </div>
+  
+  <form (ngSubmit)="PostAssignment()" [formGroup]="form">
+    <div class="row form_row center-align">
+      <div class="col s12 assignment_item">
+        <div>
+          <label id="getFileLabel" for="getFile">
+            <img class="assignmentProfile" [src]="Assignment.AssignmentImage.ImagePath">
+          </label>
+          <input type="file" id="getFile" (change)="onProfileSelected($event)" formControlName="addmainimage"/>
         </div>
       </div>
     </div>
-    <div class="row center-align">
-      <div class="col s12 assignment_item">
-        <div>
-            <label id="getFileLabel" for="getFile">
-              <img class="assignmentProfile" [src]="Assignment.AssignmentImage.ImagePath">
-            </label>
-            <input type="file" id="getFile" (change)="onProfileSelected($event)"/>
-        </div>  
-      </div>
-    </div>
-    <div class="row">
+
+    <div class="row form_row">
       <div class="input-field col s12">
-        <input value="" [(ngModel)]="Assignment.Title" [ngModelOptions]="{standalone: true}" id="title" type="text" class="validate">
+        <input value="" [(ngModel)]="Assignment.Title" id="title" type="text" formControlName="title">
         <label for="title">Titel</label>
       </div>
     </div>
-  
-    <div class="row">
+
+    <div class="row form_row">
       <div class="input-field col s12 center-align" *ngIf="Images.length <= 0">
         <p>Voeg afbeeldingen toe</p>
       </div>
@@ -37,22 +33,26 @@
           </div>
         </div>
       </div>
-      <div class="col s12 center-align">
-          <div class=" uploadbtn waves-effect waves-light btn appbutton">
-              <label id="getFileLabel" for="getImage">
-                Bestand
-              </label>
-              <input type="file" id="getImage" (change)="onImageSelected($event)"/>
-            </div>
-      </div>   
-    </div>
-    <div class="row">
-          <div class="input-field col s12">
-            <textarea [(ngModel)]="Assignment.Description" [ngModelOptions]="{standalone: true}" id="description" class="materialize-textarea"></textarea>
-            <label for="description">Beschrijving</label>
+      <div class="col s12 center-align form_row">
+        <div class=" uploadbtn waves-effect waves-light btn appbutton">
+          <label id="getFileLabel" for="getImage">
+            Bestand
+          </label>
+          <input type="file" id="getImage" (change)="onImageSelected($event)" formControlName="addimage"/>
         </div>
+      </div>
     </div>
+
+    <div class="row form_row">
+      <div class="input-field col s12">
+        <textarea [(ngModel)]="Assignment.Description" id="description" class="materialize-textarea" formControlName="description"></textarea>
+        <label for="description">Beschrijving</label>
+      </div>
+    </div>
+
     <div class="row buttonrow">
-      <a (click)="PostAssignment()" class="waves-effect waves-light btn appbutton">Opslaan</a>
-    </div>  
-  </div>
+        <button type="submit" class="btn appbutton" [disabled]="!form.valid">opslaan</button>
+      </div>
+  </form>
+
+</div>

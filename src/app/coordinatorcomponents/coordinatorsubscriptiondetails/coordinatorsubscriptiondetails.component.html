@@ -1,26 +1,26 @@
-<div class="objectcontainer" *ngIf="Loaded"> 
-  <div class="row valign-wrapper">
-      <div class="col l10 m10 s9 assignment_item">
-          <h5>{{Subscription.Student.Name}} {{Subscription.Student.Surname}}</h5>
-          <p>{{Subscription.Student.Email}}</p>
-      </div>
-      <div class="col l2 m2 s3 assignment_item">
-          <p>{{Subscription.Status}}</p>
-      </div>
-  </div>
-  <div id="motivation">
-    <span>{{Subscription.Motivation}}</span>
-  </div>
-  <div class="divider"></div>
-  <div class="row">
+<div class="objectcontainer" *ngIf="Loaded">
+    <div class="row valign-wrapper">
+        <div class="col l8 m8 s6 assignment_item">
+            <h5>{{Subscription.Student.Name}} {{Subscription.Student.Surname}}</h5>
+            <p>{{Subscription.Student.Email}}</p>
+        </div>
+        <div class="col l2 m2 s3 assignment_item">
+            </div>
+        <div class="col l2 m2 s3 assignment_item">
+            <p>{{Subscription.Status}}</p>
+        </div>
+    </div>
+    <div id="motivation">
+        <span>{{Subscription.Motivation}}</span>
+    </div>
+    <div class="divider"></div>
+    <div class="row">
+
         <div class="col s3"></div>
-        <div class="selectdiv col s6">
-            <form>
-                    <label>Status</label>
-                    <select [(ngModel)]="Subscription.StatusId" name="status" (change)="statusChanged($event)">
-                        <option *ngFor="let status of Statuses" [value]="status.Id">{{status.Status}}</option>
-                    </select>
-            </form>
+        <div class="selectdiv col s6 center-align" *ngIf="Subscription.StatusId == 2">
+            <p>Intekening accepteren?</p>
+            <button (click)="acceptSubscription($event)" type="button" class="btn appbutton"><i class="large material-icons">done</i></button>
+            <button (click)="denySubscription($event)" type="button" class="btn red appbutton"><i class="large material-icons">clear</i></button>
         </div>
         <div class="col s3"></div>
     </div>

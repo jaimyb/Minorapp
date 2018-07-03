@@ -6,6 +6,7 @@ import { AssignmentService } from '../../assignment.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import * as M from 'materialize-css';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-coordinatoreditassignment',
@@ -14,6 +15,7 @@ import * as M from 'materialize-css';
 })
 export class CoordinatoreditassignmentComponent implements OnInit {
 
+  form: FormGroup;
   Assignment: Assignment;
   Statuses: Array<AssignmentStatus>;
   Ec = [{Id: 1, ec: 5},
@@ -30,13 +32,24 @@ export class CoordinatoreditassignmentComponent implements OnInit {
   DeletedImages: Array<AssignmentImage>;
   SchoolYears: Array<string>;
   Semesters: Array<any>;
+  
 
-  constructor(private assignmentService: AssignmentService, private route: ActivatedRoute, private router: Router) {
+  constructor(private fb: FormBuilder,private assignmentService: AssignmentService, private route: ActivatedRoute, private router: Router) {
     this.Loaded = false;
     this.ParamSub = new Array<any>();
     this.Images = new Array<AssignmentImage>();
     this.DeletedImages = new Array<AssignmentImage>();
-    this.SchoolYears = new Array<string>(); 
+    this.SchoolYears = new Array<string>();
+    this.form = fb.group({
+      title: ['', Validators.required],
+      addmainimage: [''],
+      addimage: [''],
+      description: ['', Validators.required],
+      status: ['', Validators.required],
+      ec: ['', Validators.required],
+      schoolyear: ['', Validators.required],
+      semester: ['', Validators.required]
+    }, { });
    }
 
   ngOnInit() {

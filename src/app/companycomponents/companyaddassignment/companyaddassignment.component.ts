@@ -7,6 +7,7 @@ import { GlobalService } from '../../global.service';
 import * as $ from 'jquery';
 import * as M from 'materialize-css';
 import { AuthenticationService } from '../../authentication.service';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-companyaddassignment',
@@ -20,12 +21,19 @@ export class CompanyaddassignmentComponent implements OnInit {
   Loaded: boolean;
   Error: boolean;
   Images: Array<AssignmentImage>;
+  form: FormGroup;
   
-  constructor(private assignmentService: AssignmentService, private router: Router, private authenticationService: AuthenticationService) { 
+  constructor(private fb: FormBuilder, private assignmentService: AssignmentService, private router: Router, private authenticationService: AuthenticationService) { 
     this.Assignment = new Assignment();
     this.ParamSub = new Array<any>();
     this.Assignment.AssignmentImage = new AssignmentImage(null,'/assets/images/profile.png');
     this.Images = new Array<AssignmentImage>();
+    this.form = fb.group({
+      title: ['', Validators.required],
+      addmainimage: [''],
+      addimage: [''],
+      description: ['', Validators.required],
+    }, { });
   }
 
   ngOnInit() {

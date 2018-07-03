@@ -27,9 +27,9 @@ export class CoordinatorassignmentsComponent implements OnInit {
   SchoolYearFilter: string;
   SchoolYears: Array<string>;
   SemesterFilter: string;
-  Semesters: Array<any>; 
+  Semesters: Array<any>;
 
-  constructor(private assignmentService: AssignmentService, private router: Router, private globalService: GlobalService) { 
+  constructor(private assignmentService: AssignmentService, private router: Router, private globalService: GlobalService) {
     this.ParamSub = new Array<any>();
     this.SchoolYearFilter = this.GetSchoolyear();
   }
@@ -38,24 +38,23 @@ export class CoordinatorassignmentsComponent implements OnInit {
     this.ParamSub.push(
       this.assignmentService.GetAllAssignmentsByYear(this.SchoolYearFilter).subscribe(result => {
         this.Assignments = result;
-        this.assignmentService.GetAllAssignmentStatuses().subscribe(statuses => {
-          this.Statuses = statuses;
-          this.assignmentService.GetAllAssignmentSchoolYears().subscribe(years => {
-            this.SchoolYears = years;
-            this.assignmentService.GetAllAssignmentSemesters().subscribe(semesters => {
-              this.Semesters = semesters;
-              this.Loaded = true;
-              setTimeout(() => {
-                this.InitMaterializeCSS();   
-              }, 1); 
-            });         
-          });
-        });  
-      })
-    );
+      }));
+    this.assignmentService.GetAllAssignmentStatuses().subscribe(statuses => {
+      this.Statuses = statuses;
+    });
+    this.assignmentService.GetAllAssignmentSchoolYears().subscribe(years => {
+      this.SchoolYears = years;
+    });
+    this.assignmentService.GetAllAssignmentSemesters().subscribe(semesters => {
+      this.Semesters = semesters;
+      this.Loaded = true;
+      setTimeout(() => {
+        this.InitMaterializeCSS();
+      }, 1);
+    });
   }
 
-  InitMaterializeCSS(){
+  InitMaterializeCSS() {
     M.AutoInit();
   }
 
@@ -65,40 +64,40 @@ export class CoordinatorassignmentsComponent implements OnInit {
     });
   }
 
-  AssignmentClick(id){
+  AssignmentClick(id) {
     this.router.navigate(['/coordinatoropdrachtdetail', id]);
   }
 
-  onYearChange(event){
+  onYearChange(event) {
     this.ParamSub.push(
       this.assignmentService.GetAllAssignmentsByYear(this.SchoolYearFilter).subscribe(result => {
         this.Assignments = result;
       }));
   }
 
-  
-  GetSchoolyear(): string{
+
+  GetSchoolyear(): string {
     let year = Number(new Date().getFullYear());
-    if(new Date().getMonth() < 7){
-      return (year - 1).toString() + '-' + year.toString(); 
+    if (new Date().getMonth() < 7) {
+      return (year - 1).toString() + '-' + year.toString();
     }
-    else{
-      return year.toString() + '-' + (year + 1).toString(); 
+    else {
+      return year.toString() + '-' + (year + 1).toString();
     }
   }
 
-  ChangeOrder(event){
+  ChangeOrder(event) {
     console.log(event.srcElement.innerHTML);
-    switch(event.srcElement.innerHTML){
+    switch (event.srcElement.innerHTML) {
       case "Project":
         this.OrderByProp = "Title"
-      break;
+        break;
       case "Bedrijf":
         this.OrderByProp = "Company.Name"
-      break;
+        break;
       case "Ec":
         this.OrderByProp = "Ec"
-      break;
+        break;
     }
   }
 }

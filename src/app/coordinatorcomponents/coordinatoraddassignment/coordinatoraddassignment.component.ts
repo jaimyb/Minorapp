@@ -7,6 +7,7 @@ import * as $ from 'jquery';
 import * as M from 'materialize-css';
 import { AssignmentImage } from '../../assignmentimage';
 import { AuthenticationService } from '../../authentication.service';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-coordinatoraddassignment',
@@ -27,13 +28,24 @@ export class CoordinatoraddassignmentComponent implements OnInit {
   Images: Array<AssignmentImage>;
   SchoolYears: Array<string>;
   Semesters: Array<any>;
+  form: FormGroup;
   
-  constructor(private assignmentService: AssignmentService, private router: Router, private authenticationService: AuthenticationService) { 
+  constructor(private fb: FormBuilder,private assignmentService: AssignmentService, private router: Router, private authenticationService: AuthenticationService) { 
     this.Assignment = new Assignment();
     this.Assignment.AssignmentImage = new AssignmentImage(null,'/assets/images/profile.png');
     this.ParamSub = new Array<any>();
     this.Images = new Array<AssignmentImage>();
     this.SchoolYears = new Array<string>();
+    this.form = fb.group({
+      title: ['', Validators.required],
+      addmainimage: ['', Validators.required],
+      addimage: [''],
+      description: ['', Validators.required],
+      status: ['', Validators.required],
+      ec: ['', Validators.required],
+      schoolyear: ['', Validators.required],
+      semester: ['', Validators.required]
+    }, { });
   }
 
   ngOnInit() {

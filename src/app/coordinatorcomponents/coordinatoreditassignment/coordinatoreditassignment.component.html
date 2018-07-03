@@ -1,39 +1,28 @@
 <div class="objectcontainer z-depth-1" *ngIf="Loaded">
-  <form>
-  <div class="row header"><h5 class="col s12">Opdracht wijzigen</h5></div>
-    <div *ngIf="Succes" class="row">
-      <div class="col s12 m12 l12">
-        <div class="card teal lighten-2">
-          <div class="card-content white-text">
-            <span id="succesmessage" class="card-title">Succes!</span>
+
+  <div class="row header"><h5 class="col s12 header_text">Opdracht wijzigen</h5></div>
+  <form (ngSubmit)="PostAssignment()" [formGroup]="form">
+    <div class="row form_row center-align">
+      <div class="col s12 assignment_item">
+        <div>
+          <label id="getFileLabel" for="getFile">
+            <img class="assignmentProfile" [src]="Assignment.AssignmentImage.ImagePath">
+          </label>
+          <input type="file" id="getFile" (change)="onProfileSelected($event)" formControlName="addmainimage"/>
         </div>
-      </div>
-    </div>
-    </div>
-    <div class="row center-align">
-        <div class="col s12 assignment_item">
-          <div>
-              <label id="getFileLabel" for="getFile">
-                <div id="icon" class="valign-wrapper" > 
-                    <i class="material-icons">edit</i>
-                </div>
-                <img class="assignmentProfile" [src]="Assignment.AssignmentImage.ImagePath">
-              </label>
-              <input type="file" id="getFile" (change)="onProfileSelected($event)"/>
-          </div>
-          
-        </div>
-    </div>
-    <div class="row">
-      <div class="input-field col s12">
-        <input value="" name="title" [(ngModel)]="Assignment.Title" id="title" type="text" class="validate">
-        <label class="active" for="title">Titel</label>
       </div>
     </div>
 
-    <div class="row">
+    <div class="row form_row">
+      <div class="input-field col s12">
+        <input value="" [(ngModel)]="Assignment.Title" id="title" type="text" formControlName="title">
+        <label for="title">Titel</label>
+      </div>
+    </div>
+
+    <div class="row form_row">
       <div class="input-field col s12 center-align" *ngIf="Images.length <= 0">
-          <p>Voeg afbeeldingen toe</p>
+        <p>Voeg afbeeldingen toe</p>
       </div>
       <div class="input-field col s12 center-align">
         <div class="imageshow center-align z-depth-1" *ngFor="let image of Images">
@@ -42,57 +31,56 @@
           </div>
         </div>
       </div>
-      <div class="col s12 center-align">
-          <div class=" uploadbtn waves-effect waves-light btn appbutton">
-              <label id="getFileLabel" for="getImage">
-                Bestand
-              </label>
-              <input type="file" id="getImage" (change)="onImageSelected($event)"/>
-            </div>
-      </div>   
-    </div>
-
-    <div class="row">
-        <div class="selectdiv col s6">
-          <label>Status</label>
-          <select [(ngModel)]="Assignment.StatusId" name="status">
-            <option *ngFor="let s of Statuses" [value]="s.Id">{{s.Status}}</option>
-          </select>
+      <div class="col s12 center-align form_row">
+        <div class=" uploadbtn waves-effect waves-light btn appbutton">
+          <label id="getFileLabel" for="getImage">
+            Bestand
+          </label>
+          <input type="file" id="getImage" (change)="onImageSelected($event)" formControlName="addimage"/>
         </div>
-        <div class="selectdiv col s6">
-          <label>Aantal Ec</label>
-          <select [(ngModel)]="Assignment.Ec" name="ec">
-            <option *ngFor="let e of Ec" [value]="e.ec">{{e.ec}}</option>
-          </select>
-        </div>
+      </div>
     </div>
 
     <div class="row">
       <div class="selectdiv col s6">
+        <label>Status</label>
+        <select [(ngModel)]="Assignment.StatusId" formControlName="status">
+          <option *ngFor="let s of Statuses" [value]="s.Id">{{s.Status}}</option>
+        </select>
+      </div>
+      <div class="selectdiv col s6">
+        <label>Aantal Ec</label>
+        <select [(ngModel)]="Assignment.Ec" formControlName="ec">
+          <option *ngFor="let e of Ec" [value]="e.ec">{{e.ec}}</option>
+        </select>
+      </div>
+  </div>
+  <div class="row">
+      <div class="selectdiv col s6">
         <label>Schooljaar</label>
-        <select [(ngModel)]="Assignment.SchoolYear" name="schoolyear">
+        <select [(ngModel)]="Assignment.SchoolYear" formControlName="schoolyear">
           <option *ngFor="let s of SchoolYears" [value]="s.schooljaar">{{s.schooljaar}}</option>
         </select>
       </div>
       <div class="selectdiv col s6">
         <label>Semester</label>
-        <select [(ngModel)]="Assignment.Semester" name="semester">
+        <select [(ngModel)]="Assignment.Semester" formControlName="semester">
           <option *ngFor="let s of Semesters" [value]="s.semester">{{s.semester}}</option>
         </select>
       </div>
   </div>
 
-    <div class="row">
-          <div class="input-field col s12">
-            <textarea [(ngModel)]="Assignment.Description" name="description" id="description" class="materialize-textarea"></textarea>
-            <label class="active" for="description">Beschrijving</label>
-        </div>
+    <div class="row form_row">
+      <div class="input-field col s12">
+        <textarea [(ngModel)]="Assignment.Description" id="description" class="materialize-textarea" formControlName="description"></textarea>
+        <label for="description">Beschrijving</label>
+      </div>
     </div>
 
     <div class="row buttonrow">
-      <a (click)="PostAssignment()" class="waves-effect waves-light btn appbutton">Opslaan</a>
-      <a (click)="DeleteAssignment()" class="waves-effect waves-light red btn appbutton">Verwijderen</a>
-    </div>
+        <button type="submit" class="btn appbutton" [disabled]="!form.valid">opslaan</button>
+        <a (click)="DeleteAssignment()" class="red btn appbutton">Verwijderen</a>
+      </div>
   </form>
 
 </div>

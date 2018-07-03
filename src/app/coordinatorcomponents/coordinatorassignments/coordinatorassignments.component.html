@@ -1,6 +1,6 @@
-<div class="listcontainer" *ngIf="Loaded">
+<div class="listcontainer">
   <ul>
-        <li class="filter_container z-depth-1">
+        <li class="filter_container z-depth-1" *ngIf="Loaded">
             <div class="row valign-wrapper">
                 <div class="col l3 m3 s3">
                     <label class="active" for="title">Zoeken</label>
@@ -28,7 +28,7 @@
                   </div>
             </div>
         </li>
-        <li>
+        <li *ngIf="Loaded">
             <div class="row valign-wrapper">
                 <div class="col l2 m2 s2">
     

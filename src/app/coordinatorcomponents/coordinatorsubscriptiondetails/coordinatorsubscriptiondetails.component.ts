@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from '../../subscription';
 import { SubscriptionStatus } from '../../subscriptionstatus';
 import { SubscriptionService } from '../../subscription.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import * as M from 'materialize-css';
 
@@ -19,7 +19,7 @@ export class CoordinatorsubscriptiondetailsComponent implements OnInit {
   Statuses: Array<SubscriptionStatus>;
   SelectedStatus: SubscriptionStatus;
 
-  constructor(private subscriptionsService: SubscriptionService, private route: ActivatedRoute) { 
+  constructor(private subscriptionsService: SubscriptionService, private route: ActivatedRoute ,private router: Router) { 
     this.Loaded = false;
     this.ParamSub = new Array<any>();
     this.Statuses = new Array<SubscriptionStatus>();
@@ -53,10 +53,31 @@ export class CoordinatorsubscriptiondetailsComponent implements OnInit {
     });
   }
 
+  acceptSubscription(event){
+    this.Subscription.StatusId = 1;
+    this.subscriptionsService.UpdateSubscriptionStatus(this.Subscription.Id, this.Subscription.StatusId).subscribe(bool =>{
+      console.log(bool);
+      this.router.navigate["coordinatorintekening/" + this.Subscription.Id];
+    });
+  }
+
+  denySubscription(event){
+    this.Subscription.StatusId = 3;
+    this.subscriptionsService.UpdateSubscriptionStatus(this.Subscription.Id, this.Subscription.StatusId).subscribe(bool =>{
+      console.log(bool);
+      this.subscriptionsService.GetSubscriptionById(this.Subscription.Id).subscribe(subscription =>{
+        this.Subscription = subscription;
+      });
+    });
+  }
+
   statusChanged(event){
     console.log(event);
     this.subscriptionsService.UpdateSubscriptionStatus(this.Subscription.Id, this.Subscription.StatusId).subscribe(bool =>{
       console.log(bool);
+      this.subscriptionsService.GetSubscriptionById(this.Subscription.Id).subscribe(subscription =>{
+        this.Subscription = subscription;
+      });
     });
   }
 
