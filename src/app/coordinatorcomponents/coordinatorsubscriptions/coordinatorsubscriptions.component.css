@@ -26,9 +26,6 @@ p{
     text-align: center;
 }
 
-.filter_container{
-}
-
 .assignment_item :hover{
     background-color: lightgrey;
 }

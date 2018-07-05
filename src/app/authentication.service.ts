@@ -186,6 +186,6 @@ export class AuthenticationService {
   LogOff(){
     this.cookieService.delete('minorappl');
     this.Authenticated = false;
-    this.router.navigate(['home']);
+    this.router.navigate(['signin']);
   }
 }

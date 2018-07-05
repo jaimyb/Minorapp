@@ -4,11 +4,3 @@
     padding-bottom: 16px;
     padding-top: 16px;
 }
-
-img{
-    border-radius: 100%;
-    width: 100%;
-    max-width: 60px;
-    max-height: 60px;
-    float: right;
-}

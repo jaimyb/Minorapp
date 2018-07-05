@@ -52,13 +52,4 @@ export class CompanysubscriptiondetailsComponent implements OnInit {
       sub.unsubscribe();
     });
   }
-
-  statusChanged(event){
-    console.log(event);
-    this.subscriptionsService.UpdateSubscriptionStatus(this.Subscription.Id, this.Subscription.StatusId).subscribe(bool =>{
-      console.log(bool);
-    });
-  }
-
-
 }

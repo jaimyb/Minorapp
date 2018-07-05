@@ -41,9 +41,4 @@ export class ParseService {
     let assignment = this.JsonToAssignment(json);
     return new Subscription(json.IntekeningID, json.motivatie, json.intekeningstatusid, json.opdrachtid, json.studentid, json.BedrijfID ,json.intekeningstatus, assignment, student, company);
   }
-
-  // EncryptString(string: string): string{
-  //   let hash: string = bcrypt.hashSync(string, 10);
-  //   return hash;
-  // }
 }

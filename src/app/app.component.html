@@ -2,24 +2,20 @@
     <nav id="navheader">
       <div class="nav-wrapper">
         <ul id="nav-mobile" class="agent-1" *ngIf="!this.authenticationService.Authenticated">
-            <li><a routerLink="/home" routerLinkActive="selected">Home</a></li>
             <li class="logbutton"><a routerLink="/signin" routerLinkActive="selected">Inloggen</a></li>
           </ul>
         <ul id="nav-mobile" class="agent-1" *ngIf="this.authenticationService.IsCurrentUserRoleStudent() && this.authenticationService.Authenticated">
-          <li><a routerLink="/home" routerLinkActive="selected">Home</a></li>
           <li><a routerLink="/studentopdrachten" routerLinkActive="selected">Opdrachten</a></li>
           <li><a routerLink="/studentintekeningen" routerLinkActive="selected">Intekeningen</a></li>
           <li class="logbutton"><a (click)="LogOff()">Uitloggen</a></li>
         </ul>
         <ul id="nav-mobile" class="agent-1" *ngIf="this.authenticationService.IsCurrentUserRoleCoordinator() && this.authenticationService.Authenticated">
-          <li><a routerLink="/home" routerLinkActive="selected">Home</a></li>
           <li><a routerLink="/coordinatoropdrachten" routerLinkActive="selected">Opdrachten</a></li>
           <li><a routerLink="/coordinatorintekeningen" routerLinkActive="selected">Intekeningen</a></li>
           <li><a routerLink="/coordinatorbeheer" routerLinkActive="selected">Beheer</a></li>
           <li class="logbutton"><a (click)="LogOff()">Uitloggen</a></li>
         </ul>
         <ul id="nav-mobile" class="agent-1" *ngIf="this.authenticationService.IsCurrentUserRoleCompany() && !this.authenticationService.IsCurrentUserRoleCoordinator() && this.authenticationService.Authenticated">
-          <li><a routerLink="/home" routerLinkActive="selected">Home</a></li>
           <li><a routerLink="/bedrijfopdrachten" routerLinkActive="selected">Opdrachten</a></li>
           <li><a routerLink="/bedrijfintekeningen" routerLinkActive="selected">Intekeningen</a></li>
           <li class="logbutton"><a (click)="LogOff()">Uitloggen</a></li>

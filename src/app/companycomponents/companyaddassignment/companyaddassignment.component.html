@@ -8,7 +8,7 @@
       <div class="col s12 assignment_item">
         <div>
           <label id="getFileLabel" for="getFile">
-            <img class="assignmentProfile" [src]="Assignment.AssignmentImage.ImagePath">
+            <img id="projectimg" [src]="Assignment.AssignmentImage.ImagePath">
           </label>
           <input type="file" id="getFile" (change)="onProfileSelected($event)" formControlName="addmainimage"/>
         </div>

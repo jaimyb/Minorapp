@@ -107,7 +107,7 @@ export class CoordinatoreditassignmentComponent implements OnInit {
           console.log('image deleted: ' + image.ImageId);
         });
       });
-      this.Succes = bool;
+      this.router.navigate(['coordinatoropdrachten']);
     }));
     setTimeout(() => {
       this.Succes = false; 
@@ -155,7 +155,7 @@ export class CoordinatoreditassignmentComponent implements OnInit {
     if (answer) {
       this.ParamSub.push(this.assignmentService.DeleteAssignmentById(this.Assignment.Id).subscribe(bool =>{
         if(bool){
-          this.router.navigate(['/assignments']);
+          this.router.navigate(['/coordinatoropdrachten']);
         }
         else{
           this.Error = true;

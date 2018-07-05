@@ -1,13 +1,19 @@
 <div class="objectcontainer" *ngIf="Loaded">
     <div class="row valign-wrapper">
-        <div class="col l8 m8 s6 assignment_item">
+        <div class="col l12 m12 s2 assignment_item center-align">
+            <img id="projectimg" [src]="Subscription.Assignment.AssignmentImage.ImagePath">
+            <h5>{{Subscription.Assignment.Title}}</h5>
+            <p>{{Subscription.Assignment.Company.Name}}</p>
+        </div>
+    </div>
+    <div class="divider"></div>
+    <div class="row valign-wrapper">
+        <div class="col l9 m9 s8 assignment_item">
             <h5>{{Subscription.Student.Name}} {{Subscription.Student.Surname}}</h5>
             <p>{{Subscription.Student.Email}}</p>
         </div>
-        <div class="col l2 m2 s3 assignment_item">
-            </div>
-        <div class="col l2 m2 s3 assignment_item">
-            <p>{{Subscription.Status}}</p>
+        <div class="col l3 m3 s4 assignment_item center-align">
+            <p>Status: {{Subscription.Status}}</p>
         </div>
     </div>
     <div id="motivation">
@@ -19,8 +25,12 @@
         <div class="col s3"></div>
         <div class="selectdiv col s6 center-align" *ngIf="Subscription.StatusId == 2">
             <p>Intekening accepteren?</p>
-            <button (click)="acceptSubscription($event)" type="button" class="btn appbutton"><i class="large material-icons">done</i></button>
-            <button (click)="denySubscription($event)" type="button" class="btn red appbutton"><i class="large material-icons">clear</i></button>
+            <button (click)="acceptSubscription($event)" type="button" class="btn appbutton">
+                <i class="large material-icons">done</i>
+            </button>
+            <button (click)="denySubscription($event)" type="button" class="btn red appbutton">
+                <i class="large material-icons">clear</i>
+            </button>
         </div>
         <div class="col s3"></div>
     </div>
